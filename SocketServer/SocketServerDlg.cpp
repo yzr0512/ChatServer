@@ -1,5 +1,5 @@
-
-// SocketServerDlg.cpp : ÊµÏÖÎÄ¼ş
+ï»¿
+// SocketServerDlg.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
@@ -12,12 +12,12 @@
 #endif
 
 
-// CSocketServerDlg ¶Ô»°¿ò
+// CSocketServerDlg å¯¹è¯æ¡†
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºCSocketServerDlg
-¹¦ÄÜÃèÊö£º¹¹Ôìº¯Êı
+å‡½æ•°åç§°ï¼šCSocketServerDlg
+åŠŸèƒ½æè¿°ï¼šæ„é€ å‡½æ•°
 
 *********************************************************/
 CSocketServerDlg::CSocketServerDlg(CWnd* pParent /*=NULL*/)
@@ -46,57 +46,59 @@ BEGIN_MESSAGE_MAP(CSocketServerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SEND, &CSocketServerDlg::OnBnClickedButtonSend)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN, &CSocketServerDlg::OnBnClickedButtonOpen)
 	ON_COMMAND(ID_DATA_DIALOG, &CSocketServerDlg::OnDataDialog)
+	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
+	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
 END_MESSAGE_MAP()
 
 
-// CSocketServerDlg ÏûÏ¢´¦Àí³ÌĞò
+// CSocketServerDlg æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 BOOL CSocketServerDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// ÉèÖÃ´Ë¶Ô»°¿òµÄÍ¼±ê¡£µ±Ó¦ÓÃ³ÌĞòÖ÷´°¿Ú²»ÊÇ¶Ô»°¿òÊ±£¬¿ò¼Ü½«×Ô¶¯
-	//  Ö´ĞĞ´Ë²Ù×÷
-	SetIcon(m_hIcon, TRUE);			// ÉèÖÃ´óÍ¼±ê
-	SetIcon(m_hIcon, FALSE);		// ÉèÖÃĞ¡Í¼±ê
+	// è®¾ç½®æ­¤å¯¹è¯æ¡†çš„å›¾æ ‡ã€‚å½“åº”ç”¨ç¨‹åºä¸»çª—å£ä¸æ˜¯å¯¹è¯æ¡†æ—¶ï¼Œæ¡†æ¶å°†è‡ªåŠ¨
+	//  æ‰§è¡Œæ­¤æ“ä½œ
+	SetIcon(m_hIcon, TRUE);			// è®¾ç½®å¤§å›¾æ ‡
+	SetIcon(m_hIcon, FALSE);		// è®¾ç½®å°å›¾æ ‡
 
-	// TODO: ÔÚ´ËÌí¼Ó¶îÍâµÄ³õÊ¼»¯´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ é¢å¤–çš„åˆå§‹åŒ–ä»£ç 
 	
-	//³õÊ¼»¯¿Í»§¶ËÁĞ±í
+	//åˆå§‹åŒ–å®¢æˆ·ç«¯åˆ—è¡¨
 	
-	// »ñÈ¡ÁĞ±í¿Ø¼şµÄ¿í¶È
+	// è·å–åˆ—è¡¨æ§ä»¶çš„å®½åº¦
 	CRect rect;
 	m_lstClient.GetClientRect(&rect);
 	int nColInterval = rect.Width();
 
-	// ÉèÖÃListCtrlµÄÑùÊ½
-	//  LVS_EX_GRIDLINES Íø¸ñÏß
-	//  LVS_EX_FULLROWSELECT ÕûĞĞÑ¡ÖĞ
+	// è®¾ç½®ListCtrlçš„æ ·å¼
+	//  LVS_EX_GRIDLINES ç½‘æ ¼çº¿
+	//  LVS_EX_FULLROWSELECT æ•´è¡Œé€‰ä¸­
 	m_lstClient.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 
-	// ²åÈë±íÍ·
-	// ²ÎÊı·Ö±ğÎª£ºÁĞË÷Òı£¨µÚ¼¸ÁĞ£©¡¢ÁĞÃû¡¢ÁĞµÄÎÄ×Ö¸ñÊ½¡¢ÁĞ¿í¡¢ÓëÁĞÏà¹ØÁª×ÓÏîµÄË÷Òı
-	//  LVCFMT_CENTER ¾ÓÖĞ
-	//  LVCFMT_LEFT   ×ó¶ÔÆë
-	//  LVCFMT_RIGHT  ÓÒ¶ÔÆë
-	m_lstClient.InsertColumn(0, _T("¿Í»§¶ËÁĞ±í"), LVCFMT_CENTER, int(nColInterval));   
+	// æ’å…¥è¡¨å¤´
+	// å‚æ•°åˆ†åˆ«ä¸ºï¼šåˆ—ç´¢å¼•ï¼ˆç¬¬å‡ åˆ—ï¼‰ã€åˆ—åã€åˆ—çš„æ–‡å­—æ ¼å¼ã€åˆ—å®½ã€ä¸åˆ—ç›¸å…³è”å­é¡¹çš„ç´¢å¼•
+	//  LVCFMT_CENTER å±…ä¸­
+	//  LVCFMT_LEFT   å·¦å¯¹é½
+	//  LVCFMT_RIGHT  å³å¯¹é½
+	m_lstClient.InsertColumn(0, _T("å®¢æˆ·ç«¯åˆ—è¡¨"), LVCFMT_CENTER, int(nColInterval));   
    
-	return TRUE;  // ³ı·Ç½«½¹µãÉèÖÃµ½¿Ø¼ş£¬·ñÔò·µ»Ø TRUE
+	return TRUE;  // é™¤éå°†ç„¦ç‚¹è®¾ç½®åˆ°æ§ä»¶ï¼Œå¦åˆ™è¿”å› TRUE
 }
 
-// Èç¹ûÏò¶Ô»°¿òÌí¼Ó×îĞ¡»¯°´Å¥£¬ÔòĞèÒªÏÂÃæµÄ´úÂë
-//  À´»æÖÆ¸ÃÍ¼±ê¡£¶ÔÓÚÊ¹ÓÃÎÄµµ/ÊÓÍ¼Ä£ĞÍµÄ MFC Ó¦ÓÃ³ÌĞò£¬
-//  Õâ½«ÓÉ¿ò¼Ü×Ô¶¯Íê³É¡£
+// å¦‚æœå‘å¯¹è¯æ¡†æ·»åŠ æœ€å°åŒ–æŒ‰é’®ï¼Œåˆ™éœ€è¦ä¸‹é¢çš„ä»£ç 
+//  æ¥ç»˜åˆ¶è¯¥å›¾æ ‡ã€‚å¯¹äºä½¿ç”¨æ–‡æ¡£/è§†å›¾æ¨¡å‹çš„ MFC åº”ç”¨ç¨‹åºï¼Œ
+//  è¿™å°†ç”±æ¡†æ¶è‡ªåŠ¨å®Œæˆã€‚
 
 void CSocketServerDlg::OnPaint()
 {
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // ÓÃÓÚ»æÖÆµÄÉè±¸ÉÏÏÂÎÄ
+		CPaintDC dc(this); // ç”¨äºç»˜åˆ¶çš„è®¾å¤‡ä¸Šä¸‹æ–‡
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Ê¹Í¼±êÔÚ¹¤×÷Çø¾ØĞÎÖĞ¾ÓÖĞ
+		// ä½¿å›¾æ ‡åœ¨å·¥ä½œåŒºçŸ©å½¢ä¸­å±…ä¸­
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
@@ -104,7 +106,7 @@ void CSocketServerDlg::OnPaint()
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// »æÖÆÍ¼±ê
+		// ç»˜åˆ¶å›¾æ ‡
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
@@ -113,8 +115,8 @@ void CSocketServerDlg::OnPaint()
 	}
 }
 
-//µ±ÓÃ»§ÍÏ¶¯×îĞ¡»¯´°¿ÚÊ±ÏµÍ³µ÷ÓÃ´Ëº¯ÊıÈ¡µÃ¹â±ê
-//ÏÔÊ¾¡£
+//å½“ç”¨æˆ·æ‹–åŠ¨æœ€å°åŒ–çª—å£æ—¶ç³»ç»Ÿè°ƒç”¨æ­¤å‡½æ•°å–å¾—å…‰æ ‡
+//æ˜¾ç¤ºã€‚
 HCURSOR CSocketServerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
@@ -122,54 +124,54 @@ HCURSOR CSocketServerDlg::OnQueryDragIcon()
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºOpenServer
-¹¦ÄÜÃèÊö£º³õÊ¼»¯·şÎñÆ÷
-·µ »Ø Öµ£º³É¹¦·µ»ØIDS_SERVER_OPEN_SUCCESS
+å‡½æ•°åç§°ï¼šOpenServer
+åŠŸèƒ½æè¿°ï¼šåˆå§‹åŒ–æœåŠ¡å™¨
+è¿” å› å€¼ï¼šæˆåŠŸè¿”å›IDS_SERVER_OPEN_SUCCESS
 *********************************************************/
 int CSocketServerDlg::OpenServer(void)
 {
 	m_pSocketListen = new CListenSocket(this);
 
 	if(!AfxSocketInit())
-	{// Ì×½Ó×Ö³õÊ¼»¯Ê§°Ü		
-		OutputInfo(IDP_SOCKETS_INIT_FAILED); // Êä³öĞÅÏ¢
-		delete m_pSocketListen; // Çå³ıSocket
-		m_pSocketListen = NULL; // Ö¸ÕëÖÃ¿Õ
+	{// å¥—æ¥å­—åˆå§‹åŒ–å¤±è´¥		
+		OutputInfo(IDP_SOCKETS_INIT_FAILED); // è¾“å‡ºä¿¡æ¯
+		delete m_pSocketListen; // æ¸…é™¤Socket
+		m_pSocketListen = NULL; // æŒ‡é’ˆç½®ç©º
 		return IDP_SOCKETS_INIT_FAILED;
 	}
 
 	if(m_pSocketListen->Create(8080) == NULL) 
-	{// °ó¶¨¶Ë¿ÚÊ§°Ü
-		OutputInfo(IDP_SOCKETS_BIND_FAILED); // Êä³öĞÅÏ¢
-		delete m_pSocketListen; //Çå³ıSocket
+	{// ç»‘å®šç«¯å£å¤±è´¥
+		OutputInfo(IDP_SOCKETS_BIND_FAILED); // è¾“å‡ºä¿¡æ¯
+		delete m_pSocketListen; //æ¸…é™¤Socket
 		m_pSocketListen = NULL;
 		return IDP_SOCKETS_BIND_FAILED;
 	}
 	
-	m_pSocketListen->Listen(); //Æô¶¯¼àÌı
-	OutputInfo(IDS_SERVER_OPEN_SUCCESS); // Êä³öĞÅÏ¢
+	m_pSocketListen->Listen(); //å¯åŠ¨ç›‘å¬
+	OutputInfo(IDS_SERVER_OPEN_SUCCESS); // è¾“å‡ºä¿¡æ¯
 
 	return IDS_SERVER_OPEN_SUCCESS;
 }
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºAcceptClient
-¹¦ÄÜÃèÊö£º¼àÌıÁ¬½ÓÇëÇó
-·µ »Ø Öµ£ºÎŞÒâÒå
+å‡½æ•°åç§°ï¼šAcceptClient
+åŠŸèƒ½æè¿°ï¼šç›‘å¬è¿æ¥è¯·æ±‚
+è¿” å› å€¼ï¼šæ— æ„ä¹‰
 *********************************************************/
 int CSocketServerDlg::AcceptClient(void)
 {
-	//¶¨ÒåÒ»¸öÓÃÓÚ½»»¥µÄSocket
+	//å®šä¹‰ä¸€ä¸ªç”¨äºäº¤äº’çš„Socket
 	CChatSocket *pSocket = new CChatSocket(this);
 
 	if(!m_pSocketListen->Accept(*pSocket))
-	{// Á¬½Ó¿Í»§¶ËÊ§°Ü
+	{// è¿æ¥å®¢æˆ·ç«¯å¤±è´¥
 		delete pSocket;
 		pSocket = NULL;
 	}
 	else
-	{// Á¬½Ó³É¹¦ ½«pSocketÖ¸Õë¼Óµ½m_listSocketChatÄ©Î²
+	{// è¿æ¥æˆåŠŸ å°†pSocketæŒ‡é’ˆåŠ åˆ°m_listSocketChatæœ«å°¾
 		m_listSocketChat.AddTail(pSocket);			
 	}
 	return 0;
@@ -177,17 +179,17 @@ int CSocketServerDlg::AcceptClient(void)
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºRecvMsg
-¹¦ÄÜÃèÊö£º½ÓÊÕĞÅÏ¢
-²ÎÊıËµÃ÷£ºpSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£ºÎŞÒâÒå
+å‡½æ•°åç§°ï¼šRecvMsg
+åŠŸèƒ½æè¿°ï¼šæ¥æ”¶ä¿¡æ¯
+å‚æ•°è¯´æ˜ï¼špSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼šæ— æ„ä¹‰
 *********************************************************/
 int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 {
-	int iBufSize = 1024; // ½ÓÊÕµÄ×î´ó×Ö½ÚÊı
+	int iBufSize = 4096; // æ¥æ”¶çš„æœ€å¤§å­—èŠ‚æ•°
 	struct MSG_T *msg = new struct MSG_T;
 	int iRes = pSocket->Receive((char *)msg, iBufSize);	
-	if(iRes == SOCKET_ERROR) // ½ÓÊÕÊ§°Ü
+	if(iRes == SOCKET_ERROR) // æ¥æ”¶å¤±è´¥
 	{
 		//MessageBox(_T("SOCKET_ERROR"));
 		OutputInfo(_T("SOCKET_ERROR"));
@@ -195,33 +197,33 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 	}
 	switch(msg->nType)
 	{
-	case LOGIN: // µÇÂ¼ÏûÏ¢
+	case LOGIN: // ç™»å½•æ¶ˆæ¯
 		Login((struct MSG_LOGIN *)msg, pSocket);break;
-	case LOGIN_OUT: // ÏÂÏßÏûÏ¢
+	case LOGIN_OUT: // ä¸‹çº¿æ¶ˆæ¯
 		LoginOut((struct MSG_LOGIN *)msg, pSocket);break;
 
-	case REGISTER: // ×¢²áÏûÏ¢
+	case REGISTER: // æ³¨å†Œæ¶ˆæ¯
 		Register((struct MSG_REGISTER *)msg, pSocket);break;
 
-	case GET_FRIEND_LIST: // ÇëÇó»ñµÃºÃÓÑÁĞ±í
+	case GET_FRIEND_LIST: // è¯·æ±‚è·å¾—å¥½å‹åˆ—è¡¨
 		GetFriendList((struct MSG_USERINFO *)msg, pSocket);break;
-	case GET_FRIEND_INFO: // ÇëÇó»ñµÃºÃÓÑĞÅÏ¢
+	case GET_FRIEND_INFO: // è¯·æ±‚è·å¾—å¥½å‹ä¿¡æ¯
 		GetFriendInfo((struct MSG_USERINFO *)msg, pSocket);break;
-	case GET_ALL_FRIEND_INFO:
-		
+	case GET_ALL_FRIEND_INFO: // è¯·æ±‚è·å¾—å…¨éƒ¨å¥½å‹çš„åŸºæœ¬ä¿¡æ¯
+		GetAllFriendInfo((struct MSG_FRND_INFO*)msg, pSocket);
 		break;
-	case GET_STRANGER_INFO: // ÇëÇó»ñµÃÄ°ÉúÈËĞÅÏ¢
+	case GET_STRANGER_INFO: // è¯·æ±‚è·å¾—é™Œç”Ÿäººä¿¡æ¯
 		GetStrangerInfo((struct MSG_USERINFO *)msg, pSocket);break;
-	case STATUS_ONLINE: // ÉèÖÃÔÚÏß×´Ì¬
+	case SET_USER_STATUS: // è®¾ç½®åœ¨çº¿çŠ¶æ€
 		SetUserStatus((struct MSG_USERINFO *)msg, pSocket);break;
 
-	case CHATING_TEXT_MSG: // ÁÄÌìÏûÏ¢
+	case CHATING_TEXT_MSG: // èŠå¤©æ¶ˆæ¯
 		RelayChatMsg((struct MSG_TRANSPOND *)msg, pSocket);break;
-	case ADD_FRIEND_REQUEST: // Ìí¼ÓºÃÓÑÇëÇó
+	case ADD_FRIEND_REQUEST: // æ·»åŠ å¥½å‹è¯·æ±‚
 		RelayChatMsg((struct MSG_TRANSPOND *)msg, pSocket);break;
-	case ADD_FRIEND_ANSWER: // Ìí¼ÓÇëÇó»ØÓ¦
+	case ADD_FRIEND_ANSWER: // æ·»åŠ è¯·æ±‚å›åº”
 		AddFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
-	case DELETE_FRIEND: // É¾³ıºÃÓÑ
+	case DELETE_FRIEND: // åˆ é™¤å¥½å‹
 		DeleteFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
 
 
@@ -230,89 +232,89 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 }
 
 
-//ÏÂÃæÊÇ¸÷ÖÖÏûÏ¢µÄ´¦Àíº¯Êı
+//ä¸‹é¢æ˜¯å„ç§æ¶ˆæ¯çš„å¤„ç†å‡½æ•°
 //
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºLogin
-¹¦ÄÜÃèÊö£ºÓÃ»§µÇÂ¼
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šLogin
+åŠŸèƒ½æè¿°ï¼šç”¨æˆ·ç™»å½•
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 int CSocketServerDlg::Login(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 {
 	int nRes = m_data.IsCorrect(msg->nID, msg->Key);
 
-	if(nRes == TRUE)// ¼ì²éÕËºÅÃÜÂëÕıÈ·ĞÔ
-	{// ÃÜÂëÕıÈ·
-		if(m_data.GetUserStatus(msg->nID) == STATUS_OFFLINE)
-		{// ÔÊĞíµÇÂ¼
-			// ¸ø¿Í»§¶Ë·µ»ØÕËºÅĞÅÏ¢
+	if(nRes == TRUE)// æ£€æŸ¥è´¦å·å¯†ç æ­£ç¡®æ€§
+	{// å¯†ç æ­£ç¡®
+		if(m_data.GetUserStatus(msg->nID) == IDS_STATUS_OFFLINE)
+		{// å…è®¸ç™»å½•
+			// ç»™å®¢æˆ·ç«¯è¿”å›è´¦å·ä¿¡æ¯
 			struct MSG_USERINFO msg_info;
 			msg_info.nType = LOGIN_SUCCESS;
 			m_data.GetUserInfo(msg_info, msg->nID);
 			if(pSocket->Send((void *)&msg_info, sizeof(msg_info)) == 0)
-			{//·¢ËÍÊ§°Ü
+			{//å‘é€å¤±è´¥
 				OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
 				return IDS_ERR_SOCKETS_SEND_FAILED;
 			}
 
-			strcpy_s(pSocket->m_userID, msg->nID); // ÉèÖÃpSocketµÄnID
+			strcpy_s(pSocket->m_userID, msg->nID); // è®¾ç½®pSocketçš„nID
 			m_data.SetUserStatus(msg->nID, msg->nStatus);		
-			RefreshListCtrlData(); // ¸üĞÂÁĞ±í¿Ø¼şÖĞµÄÊı¾İ
+			RefreshListCtrlData(); // æ›´æ–°åˆ—è¡¨æ§ä»¶ä¸­çš„æ•°æ®
 			
-			// ÔÚ±à¼­¿òÊä³öĞÅÏ¢		
+			// åœ¨ç¼–è¾‘æ¡†è¾“å‡ºä¿¡æ¯		
 			CString csOutMsg;
 			CString csID;
 			csID = msg->nID;
-			csOutMsg.Format(_T("ÓÃ»§%sÒÑÁ¬½Ó"), csID);
+			csOutMsg.Format(_T("ç”¨æˆ·%så·²è¿æ¥"), csID);
 			OutputInfo(csOutMsg);
 		}
 		else
-		{// ¾Ü¾øµÇÂ¼ Ô­Òò£ºÖØ¸´µÇÂ¼
-			// ·şÎñÆ÷·µ»ØĞÅÏ¢ ¸æËß¿Í»§¶ËµÇÂ¼Ê§°Ü
+		{// æ‹’ç»ç™»å½• åŸå› ï¼šé‡å¤ç™»å½•
+			// æœåŠ¡å™¨è¿”å›ä¿¡æ¯ å‘Šè¯‰å®¢æˆ·ç«¯ç™»å½•å¤±è´¥
 			struct MSG_SYS msg_sys;
 			msg_sys.nType = IDS_SYSTEM_MESSAGE;
 			msg_sys.nIDPrompt = IDS_ERR_ID_HAD_LOGIN;
 			if(pSocket->Send((void *)&msg_sys, sizeof(msg_sys)) == 0)
-			{//·¢ËÍÊ§°Ü
+			{//å‘é€å¤±è´¥
 				OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
 				return IDS_ERR_SOCKETS_SEND_FAILED;
 			}
 			/*struct MSG_T msg_reply;
 			msg_reply.nType = LOGIN_FAILED;
 			memset(msg_reply.Data, '\0', sizeof(msg_reply.Data));	
-			memcpy(msg_reply.Data, _T("´ËÕËºÅÒÑµÇÂ¼"), sizeof(_T("´ËÕËºÅÒÑµÇÂ¼")));			
+			memcpy(msg_reply.Data, _T("æ­¤è´¦å·å·²ç™»å½•"), sizeof(_T("æ­¤è´¦å·å·²ç™»å½•")));			
 			if(pSocket->Send((void *)&msg_reply, sizeof(msg_reply)) == 0)
-			{//·¢ËÍÊ§°Ü
+			{//å‘é€å¤±è´¥
 				OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
 				return IDS_ERR_SOCKETS_SEND_FAILED;
 			}*/			
 		}
 	}
 	else if(nRes == IDS_ERR_PASSWD_INCORRECT)
-	{// ¾Ü¾øµÇÂ½ Ô­Òò£ºÃÜÂë´íÎó
-		// ·şÎñÆ÷·µ»ØĞÅÏ¢ ¸æËß¿Í»§¶ËµÇÂ¼Ê§°Ü
+	{// æ‹’ç»ç™»é™† åŸå› ï¼šå¯†ç é”™è¯¯
+		// æœåŠ¡å™¨è¿”å›ä¿¡æ¯ å‘Šè¯‰å®¢æˆ·ç«¯ç™»å½•å¤±è´¥
 		struct MSG_SYS msg_sys;
 		msg_sys.nType = IDS_SYSTEM_MESSAGE;
 		msg_sys.nIDPrompt = IDS_ERR_PASSWD_INCORRECT;
 		if(pSocket->Send((void *)&msg_sys, sizeof(msg_sys)) == 0)
-		{//·¢ËÍÊ§°Ü
+		{//å‘é€å¤±è´¥
 			OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);				
 			return IDS_ERR_SOCKETS_SEND_FAILED;
 		}	
 		/*struct MSG_T msg_reply;
 		msg_reply.nType = LOGIN_FAILED;
 		memset(msg_reply.Data, '\0', sizeof(msg_reply.Data));	
-		memcpy(msg_reply.Data, _T("ÕËºÅ»òÃÜÂë²»ÕıÈ·"), sizeof(_T("ÕËºÅ»òÃÜÂë²»ÕıÈ·")));			
+		memcpy(msg_reply.Data, _T("è´¦å·æˆ–å¯†ç ä¸æ­£ç¡®"), sizeof(_T("è´¦å·æˆ–å¯†ç ä¸æ­£ç¡®")));			
 		if(pSocket->Send((void *)&msg_reply, sizeof(msg_reply)) == 0)
-		{//·¢ËÍÊ§°Ü
+		{//å‘é€å¤±è´¥
 			OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);				
 			return IDS_ERR_SOCKETS_SEND_FAILED;
 		}*/
 	}
 	else if(nRes == IDS_ERR_USER_NOT_EXIST)
-	{// ÓÃ»§²»´æÔÚ
+	{// ç”¨æˆ·ä¸å­˜åœ¨
 		struct MSG_SYS msg_sys;
 		msg_sys.nType = IDS_SYSTEM_MESSAGE;
 		msg_sys.nIDPrompt = IDS_ERR_USER_NOT_EXIST;
@@ -323,34 +325,34 @@ int CSocketServerDlg::Login(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºLoginOut
-¹¦ÄÜÃèÊö£ºÓÃ»§ÏÂÏß
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šLoginOut
+åŠŸèƒ½æè¿°ï¼šç”¨æˆ·ä¸‹çº¿
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 int CSocketServerDlg::LoginOut(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 {
-	// ½«×´Ì¬ÉèÖÃÎªÀëÏß
-	m_data.SetUserStatus(pSocket->m_userID, STATUS_OFFLINE);
+	// å°†çŠ¶æ€è®¾ç½®ä¸ºç¦»çº¿
+	m_data.SetUserStatus(pSocket->m_userID, IDS_STATUS_OFFLINE);
 
 	CString csOutMsg;
 	CString csID;
 	csID = msg->nID;
-	csOutMsg.Format(_T("ÓÃ»§%sÒÑÍË³ö"), csID);
+	csOutMsg.Format(_T("ç”¨æˆ·%så·²é€€å‡º"), csID);
 	OutputInfo(csOutMsg);
 	//pSocket->ID = "";
 	memset(pSocket->m_userID, 0, ID_MAX);
-	// Ë¢ĞÂÓÃ»§ÁĞ±í
+	// åˆ·æ–°ç”¨æˆ·åˆ—è¡¨
 	RefreshListCtrlData();
 	return 0;
 }
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºRegister
-¹¦ÄÜÃèÊö£ºÓÃ»§×¢²á
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šRegister
+åŠŸèƒ½æè¿°ï¼šç”¨æˆ·æ³¨å†Œ
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 int CSocketServerDlg::Register(struct MSG_REGISTER * msg_reg, CChatSocket * pSocket)
 {
@@ -360,20 +362,21 @@ int CSocketServerDlg::Register(struct MSG_REGISTER * msg_reg, CChatSocket * pSoc
 	msg_reg->nType = REGISTER_SUCCESS;
 	strcpy_s(msg_reg->nID, nID);
 	if(pSocket->Send(msg_reg, sizeof(*msg_reg)) == 0)
-	{// ·¢ËÍÊ§°Ü
+	{// å‘é€å¤±è´¥
 		OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
 		return IDS_ERR_SOCKETS_SEND_FAILED;
 	}
-	delete msg_reg; // ÊÍ·ÅÄÚ´æ
+	delete msg_reg; // é‡Šæ”¾å†…å­˜
+	RefreshListCtrlData();
 	return 0;
 }
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºRelayChatMsg
-¹¦ÄÜÃèÊö£º×ª·¢ÁÄÌìÏûÏ¢
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šRelayChatMsg
+åŠŸèƒ½æè¿°ï¼šè½¬å‘èŠå¤©æ¶ˆæ¯
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 int CSocketServerDlg::RelayChatMsg(struct MSG_TRANSPOND * msg_tran, CChatSocket * pSocket)
 {
@@ -388,7 +391,7 @@ int CSocketServerDlg::RelayChatMsg(struct MSG_TRANSPOND * msg_tran, CChatSocket 
 			return 0;
 		}
 	}
-	// Èç¹û¶Ô·½²»ÔÚÏß ÔòÏÈ½«ÏûÏ¢´æÆğÀ´
+	// å¦‚æœå¯¹æ–¹ä¸åœ¨çº¿ åˆ™å…ˆå°†æ¶ˆæ¯å­˜èµ·æ¥
 	m_listChatMsg.AddTail(msg_tran);
 
 	return 0;
@@ -396,14 +399,14 @@ int CSocketServerDlg::RelayChatMsg(struct MSG_TRANSPOND * msg_tran, CChatSocket 
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºGetFriendList
-¹¦ÄÜÃèÊö£º»ñµÃºÃÓÑÁĞ±í
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šGetFriendList
+åŠŸèƒ½æè¿°ï¼šè·å¾—å¥½å‹åˆ—è¡¨
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 int CSocketServerDlg::GetFriendList(struct MSG_USERINFO * msg_userinfo, CChatSocket * pSocket)
 {	
-	struct MSG_USERINFO UserInfo; // ÓÃÀ´»Ø¸´µÄ½á¹¹Ìå
+	struct MSG_USERINFO UserInfo; // ç”¨æ¥å›å¤çš„ç»“æ„ä½“
 	UserInfo.nType = GET_FRIEND_LIST;
 	if(m_data.GetUserFriendList(UserInfo.FriendList, msg_userinfo->nID))
 	{
@@ -414,10 +417,10 @@ int CSocketServerDlg::GetFriendList(struct MSG_USERINFO * msg_userinfo, CChatSoc
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºGetFriendInfo
-¹¦ÄÜÃèÊö£º»ñµÃºÃÓÑĞÅÏ¢
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šGetFriendInfo
+åŠŸèƒ½æè¿°ï¼šè·å¾—å¥½å‹ä¿¡æ¯
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 int CSocketServerDlg::GetFriendInfo(struct MSG_USERINFO * msg_userinfo, CChatSocket * pSocket)
 {
@@ -426,14 +429,14 @@ int CSocketServerDlg::GetFriendInfo(struct MSG_USERINFO * msg_userinfo, CChatSoc
 	{
 		info.nType = GET_FRIEND_INFO;	
 		if(pSocket->Send(&info, sizeof(info)) == 0)
-		{//·¢ËÍÊ§°Ü
+		{//å‘é€å¤±è´¥
 			OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
 			return IDS_ERR_SOCKETS_SEND_FAILED;
 		}
 		
 	}
 	else
-	{// ²éÑ¯µÄÓÃ»§²»´æÔÚ
+	{// æŸ¥è¯¢çš„ç”¨æˆ·ä¸å­˜åœ¨
 		
 	
 	}
@@ -442,10 +445,10 @@ int CSocketServerDlg::GetFriendInfo(struct MSG_USERINFO * msg_userinfo, CChatSoc
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºGetStrangerInfo
-¹¦ÄÜÃèÊö£º»ñµÃÄ°ÉúÈËĞÅÏ¢
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šGetStrangerInfo
+åŠŸèƒ½æè¿°ï¼šè·å¾—é™Œç”Ÿäººä¿¡æ¯
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 int CSocketServerDlg::GetStrangerInfo(struct MSG_USERINFO * msg_userinfo, CChatSocket * pSocket)
 {
@@ -454,13 +457,13 @@ int CSocketServerDlg::GetStrangerInfo(struct MSG_USERINFO * msg_userinfo, CChatS
 	{
 		info.nType = GET_STRANGER_INFO;	
 		if(pSocket->Send(&info, sizeof(info)) == 0)
-		{//·¢ËÍÊ§°Ü
+		{//å‘é€å¤±è´¥
 			OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
 			return IDS_ERR_SOCKETS_SEND_FAILED;
 		}
 	}
 	else
-	{// ²éÑ¯µÄÓÃ»§²»´æÔÚ
+	{// æŸ¥è¯¢çš„ç”¨æˆ·ä¸å­˜åœ¨
 		struct MSG_SYS msg_sys;
 		msg_sys.nType = IDS_SYSTEM_MESSAGE;
 		msg_sys.nIDPrompt = IDS_ERR_USER_NOT_EXIST;
@@ -471,11 +474,11 @@ int CSocketServerDlg::GetStrangerInfo(struct MSG_USERINFO * msg_userinfo, CChatS
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºAddFriend
-¹¦ÄÜÃèÊö£ºÌí¼ÓºÃÓÑ
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šAddFriend
+åŠŸèƒ½æè¿°ï¼šæ·»åŠ å¥½å‹
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
+å¤‡    æ³¨ï¼š
 *********************************************************/
 int CSocketServerDlg::AddFriend(struct MSG_TRANSPOND * msg_addfrd, CChatSocket * pSocket) 
 {
@@ -483,50 +486,50 @@ int CSocketServerDlg::AddFriend(struct MSG_TRANSPOND * msg_addfrd, CChatSocket *
 	msg_sys->nType = IDS_SYSTEM_MESSAGE;
 
 	if(msg_addfrd->nReturn == ADD_FRIEND_AGREE)
-	{// Í¬ÒâºÃÓÑÉêÇë
+	{// åŒæ„å¥½å‹ç”³è¯·
 		int nRes;
 		nRes = m_data.MakeFriend(msg_addfrd->FromID, msg_addfrd->ToID);
 		if(nRes == TRUE)
-		{// Ìí¼Ó³É¹¦		
+		{// æ·»åŠ æˆåŠŸ		
 			msg_sys->nIDPrompt = IDS_ADD_FRIEND_SUCCESS;
 		}
 		else if(nRes == IDS_ERR_FRIEND_ADD_SELF)
-		{// ²»ÄÜÌí¼Ó×Ô¼ºÎªºÃÓÑ
+		{// ä¸èƒ½æ·»åŠ è‡ªå·±ä¸ºå¥½å‹
 			msg_sys->nIDPrompt = IDS_ERR_FRIEND_ADD_SELF;			
 		}
 		else if(nRes == IDS_ERR_FRIEND_HAD_EXIST)
-		{// ºÃÓÑÒÑ¾­´æÔÚ
+		{// å¥½å‹å·²ç»å­˜åœ¨
 			msg_sys->nIDPrompt = IDS_ERR_FRIEND_HAD_EXIST;
 		}
 
-		// ·Ö±ğÏòË«·½·¢ËÍÏûÏ¢
+		// åˆ†åˆ«å‘åŒæ–¹å‘é€æ¶ˆæ¯
 		strcpy_s(msg_sys->nID, pSocket->m_userID);
 		pSocket->Send(msg_sys, sizeof(*msg_sys));
 
 		strcpy_s(msg_sys->nID, msg_addfrd->FromID);
-		SendSystemMsg(msg_sys); // ÔÚÕâ¸öº¯ÊıÀïÃæ»á½«msg_sysÊÍ·Å
+		SendSystemMsg(msg_sys); // åœ¨è¿™ä¸ªå‡½æ•°é‡Œé¢ä¼šå°†msg_sysé‡Šæ”¾
 	}
 	else
 	{		
 		msg_sys->nIDPrompt = IDS_ADD_FRIEND_REFUSE;
 		strcpy_s(msg_sys->nID, msg_addfrd->FromID);
-		SendSystemMsg(msg_sys); // ÔÚÕâ¸öº¯ÊıÀïÃæ»á½«msg_sysÊÍ·Å
+		SendSystemMsg(msg_sys); // åœ¨è¿™ä¸ªå‡½æ•°é‡Œé¢ä¼šå°†msg_sysé‡Šæ”¾
 	}
 	return TRUE;
 }
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºDeleteFriend
-¹¦ÄÜÃèÊö£ºÉ¾³ıºÃÓÑ
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šDeleteFriend
+åŠŸèƒ½æè¿°ï¼šåˆ é™¤å¥½å‹
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
+å¤‡    æ³¨ï¼š
 *********************************************************/
 int CSocketServerDlg::DeleteFriend(struct MSG_TRANSPOND * msg_del, CChatSocket * pSocket)
 {
 	if(m_data.BreakFriend(msg_del->FromID, msg_del->ToID) == TRUE)
-	{// É¾³ıÍê³É
+	{// åˆ é™¤å®Œæˆ
 		struct MSG_SYS msg_sys;
 		msg_sys.nType = IDS_SYSTEM_MESSAGE;
 		strcpy_s(msg_sys.nID, msg_del->FromID);
@@ -538,11 +541,11 @@ int CSocketServerDlg::DeleteFriend(struct MSG_TRANSPOND * msg_del, CChatSocket *
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºSetUserStatus
-¹¦ÄÜÃèÊö£ºÉèÖÃÔÚÏß×´Ì¬
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šSetUserStatus
+åŠŸèƒ½æè¿°ï¼šè®¾ç½®åœ¨çº¿çŠ¶æ€
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
+å¤‡    æ³¨ï¼š
 *********************************************************/
 int CSocketServerDlg::SetUserStatus(struct MSG_USERINFO * msg_userinfo, CChatSocket * pSocket)
 {
@@ -553,23 +556,23 @@ int CSocketServerDlg::SetUserStatus(struct MSG_USERINFO * msg_userinfo, CChatSoc
 
 
 
-// ±éÀúÎ´·¢ËÍµÄÏûÏ¢
+// éå†æœªå‘é€çš„æ¶ˆæ¯
 
-// ±éÀúsocket ¿´¿´ÊÇ·ñ±£³ÖÁ¬½Ó
+// éå†socket çœ‹çœ‹æ˜¯å¦ä¿æŒè¿æ¥
 
 
 
-// Ë¢ĞÂÁĞ±í¿Ø¼şµÄÄÚÈİ
+// åˆ·æ–°åˆ—è¡¨æ§ä»¶çš„å†…å®¹
 int CSocketServerDlg::RefreshListCtrlData(void)
 {
-	// É¾³ıËùÓĞÊı¾İ
+	// åˆ é™¤æ‰€æœ‰æ•°æ®
 	m_lstClient.DeleteAllItems();
 	if(m_listSocketChat.IsEmpty())
 	{
 		return 1;
 	}
 
-	// ±éÀúm_listSocketChat Êä³öÀïÃæËùÓĞ²»Îª¿ÕµÄID
+	// éå†m_listSocketChat è¾“å‡ºé‡Œé¢æ‰€æœ‰ä¸ä¸ºç©ºçš„ID
 	POSITION pos = m_listSocketChat.GetHeadPosition();
 	CChatSocket *pChatSocket;
 	while(pos != NULL)
@@ -593,13 +596,13 @@ int CSocketServerDlg::RefreshListCtrlData(void)
 void CSocketServerDlg::OnLvnItemchangedListClient(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 	*pResult = 0;
 	
 	UpdateData(TRUE);
 	NMLISTVIEW *pNMListView = (NMLISTVIEW*)pNMHDR;
 
-	if(-1 != pNMListView->iItem) // Èç¹ûiItem²»ÊÇ-1£¬¾ÍËµÃ÷ÓĞÁĞ±íÏî±»Ñ¡Ôñ 
+	if(-1 != pNMListView->iItem) // å¦‚æœiItemä¸æ˜¯-1ï¼Œå°±è¯´æ˜æœ‰åˆ—è¡¨é¡¹è¢«é€‰æ‹© 
 	{
 		m_csID = m_lstClient.GetItemText(pNMListView->iItem, 0);
 		UpdateData(FALSE);
@@ -607,22 +610,22 @@ void CSocketServerDlg::OnLvnItemchangedListClient(NMHDR *pNMHDR, LRESULT *pResul
 
 }
 
-// ·şÎñÆ÷·¢ËÍĞÅÏ¢¸øÄ³ÈË
+// æœåŠ¡å™¨å‘é€ä¿¡æ¯ç»™æŸäºº
 void CSocketServerDlg::OnBnClickedButtonSend()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 
 	UpdateData(TRUE);
-	if(m_csID == "") // Èç¹ûÑ¡ÔñµÄ¿Í»§¶ËÎª¿Õ
+	if(m_csID == "") // å¦‚æœé€‰æ‹©çš„å®¢æˆ·ç«¯ä¸ºç©º
 	{
-		MessageBox(_T("ÇëÑ¡ÔñÒ»¸ö¿Í»§¶Ë£¡"));
+		MessageBox(_T("è¯·é€‰æ‹©ä¸€ä¸ªå®¢æˆ·ç«¯ï¼"));
 		return;
 	}
 
-	// ±éÀúm_listSocketChat ÕÒµ½¶ÔÓ¦IDµÄsocket
+	// éå†m_listSocketChat æ‰¾åˆ°å¯¹åº”IDçš„socket
 	POSITION pos = m_listSocketChat.GetHeadPosition();
 	CChatSocket *pChatSocket;
-	int nFlag = 0; // 0±íÊ¾²»´æÔÚ´Ë¿Í»§¶Ë
+	int nFlag = 0; // 0è¡¨ç¤ºä¸å­˜åœ¨æ­¤å®¢æˆ·ç«¯
 	while(pos != NULL)
 	{
 		pChatSocket = m_listSocketChat.GetNext(pos);
@@ -637,13 +640,13 @@ void CSocketServerDlg::OnBnClickedButtonSend()
 			
 			if(pChatSocket->Send((void *)&msgSend, sizeof(msgSend)) == 0)
 			{
-				//·¢ËÍÊ§°Ü
-				MessageBox(_T("·¢ËÍÊ§°Ü"));
+				//å‘é€å¤±è´¥
+				MessageBox(_T("å‘é€å¤±è´¥"));
 				return;
 			}
-			// ÔÚ±¾µØ±à¼­¿òÖĞÊä³öĞÅÏ¢
+			// åœ¨æœ¬åœ°ç¼–è¾‘æ¡†ä¸­è¾“å‡ºä¿¡æ¯
 			CString strTemp;
-			strTemp.Format(_T("¸øÓÃ»§%s£º%s\r\n"), pChatSocket->ID, m_csSendMsg);
+			strTemp.Format(_T("ç»™ç”¨æˆ·%sï¼š%s\r\n"), pChatSocket->ID, m_csSendMsg);
 			m_csOutMsg += strTemp;
 			m_csSendMsg = "";
 
@@ -651,23 +654,23 @@ void CSocketServerDlg::OnBnClickedButtonSend()
 			break;
 		}	
 	}
-	if(nFlag == 0) // ²»´æÔÚ´ËIDµÄsocket
+	if(nFlag == 0) // ä¸å­˜åœ¨æ­¤IDçš„socket
 	{
-		MessageBox(_T("´Ë¿Í»§¶Ë²»´æÔÚ£¡"));
+		MessageBox(_T("æ­¤å®¢æˆ·ç«¯ä¸å­˜åœ¨ï¼"));
 		return;	
 	}
 
 }
 
-// ¿ªÆô·şÎñ
+// å¼€å¯æœåŠ¡
 void CSocketServerDlg::OnBnClickedButtonOpen()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 	OpenServer();
 
 }
 
-// Êä³öÏûÏ¢
+// è¾“å‡ºæ¶ˆæ¯
 int CSocketServerDlg::OutputInfo(const CString& csOutMsg)
 {
 	CTime tm = CTime::GetCurrentTime();
@@ -694,7 +697,7 @@ int CSocketServerDlg::OutputInfo(UINT nIDPrompt)
 }
 
 
-// ·¢ËÍÏµÍ³ÏûÏ¢
+// å‘é€ç³»ç»Ÿæ¶ˆæ¯
 int CSocketServerDlg::SendSystemMsg(struct MSG_SYS * msg_sys)
 {
 	POSITION pos = m_listSocketChat.GetHeadPosition();
@@ -708,7 +711,7 @@ int CSocketServerDlg::SendSystemMsg(struct MSG_SYS * msg_sys)
 			return 0;
 		}
 	}
-	// Èç¹û¶Ô·½²»ÔÚÏß ÔòÏÈ½«ÏûÏ¢´æÆğÀ´
+	// å¦‚æœå¯¹æ–¹ä¸åœ¨çº¿ åˆ™å…ˆå°†æ¶ˆæ¯å­˜èµ·æ¥
 
 	m_listSystemMsg.AddTail(msg_sys);
 
@@ -717,15 +720,14 @@ int CSocketServerDlg::SendSystemMsg(struct MSG_SYS * msg_sys)
 
 
 /*********************************************************
-º¯ÊıÃû³Æ£ºOnDataDialog
-¹¦ÄÜÃèÊö£º´ò¿ªÊı¾İ¹ÜÀí´°¿Ú
-²ÎÊıËµÃ÷£ºmsg-ÏûÏ¢½á¹¹Ìå pSocket-½ÓÊÕµ½ÏûÏ¢µÄpSocket
-·µ »Ø Öµ£º
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šOnDataDialog
+åŠŸèƒ½æè¿°ï¼šæ‰“å¼€æ•°æ®ç®¡ç†çª—å£
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
 *********************************************************/
 void CSocketServerDlg::OnDataDialog()
 {
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 	if(m_pDataDlg == NULL)
 	{
 		m_pDataDlg = new CDataDlg(this);
@@ -733,5 +735,31 @@ void CSocketServerDlg::OnDataDialog()
 		m_pDataDlg->ShowWindow(SW_SHOW);
 		m_pDataDlg->RefreshListCtrlData(&m_data);
 	}
+
+}
+
+/*********************************************************
+å‡½æ•°åç§°ï¼šGetAllFriendInfo
+åŠŸèƒ½æè¿°ï¼šè·å¾—å¥½å‹çš„åŸºæœ¬ä¿¡æ¯
+åˆ›å»ºæ—¶é—´ï¼š2016-08-07
+å‚æ•°è¯´æ˜ï¼šmsg-æ¶ˆæ¯ç»“æ„ä½“ pSocket-æ¥æ”¶åˆ°æ¶ˆæ¯çš„pSocket
+è¿” å› å€¼ï¼š
+*********************************************************/
+int CSocketServerDlg::GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, CChatSocket* pSocket)
+{
+	int nRes;
+	nRes = m_data.GetAllFriendInfo(msg_info, pSocket->m_userID);
+	if(nRes == TRUE)
+		pSocket->Send(msg_info, sizeof(*msg_info));
+
+	//delete msg_info; // é‡Šæ”¾ç©ºé—´
+	return 0;
+}
+
+
+void CSocketServerDlg::OnBnClickedBtTest()
+{
+	m_data.SetAllUserStatus(IDS_STATUS_OFFLINE);
+	RefreshListCtrlData();
 
 }

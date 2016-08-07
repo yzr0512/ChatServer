@@ -10,7 +10,7 @@ struct USERINFO{
 	char Sex; // 性别 一位 m男性 f女性
 	int  nAge; // 年龄
 	int  nStatus; // 状态
-	char FriendList[50 * ID_MAX]; // 最多50个好友 以|分割
+	char FriendList[FRIEND_MAX * ID_MAX]; // 最多50个好友 以|分割
 	char RegDate[15]; // 注册时间xxxx-xx-xx xx:xx:xx 14位 不含分隔符 再加'\0' 共计15位
 };
 
@@ -59,6 +59,9 @@ protected:
 
 	int m_MaxID;
 
+public:
+	int GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, char* nID);
+	int SetAllUserStatus(int nStatus);
 };
 
 

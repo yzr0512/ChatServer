@@ -225,7 +225,7 @@ BOOL CData::AddUser(char* nID, struct MSG_REGISTER* msg_reg)
 
 	pUserInfo->Sex = msg_reg->Sex; // sex
 	pUserInfo->nAge = msg_reg->nAge; // age
-	pUserInfo->nStatus = STATUS_OFFLINE; // Flag
+	pUserInfo->nStatus = IDS_STATUS_OFFLINE; // Flag
 	sprintf_s(pUserInfo->nID, "%d", ++m_MaxID); // ID
 	memset(pUserInfo->FriendList, '\0', sizeof(pUserInfo->FriendList));
 
@@ -662,5 +662,57 @@ void CData::ShowData(CListCtrl * pListCtrl)const
 		//pListCtrl->SetItemText(i, 7, strTemp);
 		++i;	
 	}
+}
 
+/*********************************************************
+函数名称：GetAllFriendInfo
+功能描述：获得某个ID所有好友的基本信息
+创建时间：2016-08-07
+参数说明：msg_info-储存所有信息的结构体
+返 回 值：成功返回TRUE
+*********************************************************/
+int CData::GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, char* nID)
+{
+	struct USERINFO *pUser = NULL;
+	if(!IsExist(&pUser, nID))
+	{// 用户不存在
+		return IDS_ERR_USER_NOT_EXIST;
+	}
+	
+	char FriLst[FRIEND_MAX * ID_MAX];
+	//memcpy(FriLst, pUser->FriendList, FRIEND_MAX * ID_MAX);
+	strcpy_s(FriLst, pUser->FriendList); // 复制好友列表
+
+	int nNum = 0; // 记录好友数目
+	char *pToken = NULL; // 分割好友列表
+	char *pTokenNext = NULL;
+	pToken = strtok_s(FriLst, ",", &pTokenNext); 
+	while(pToken != NULL)
+	{
+		struct USERINFO *pFriend = NULL;
+		if(IsExist(&pFriend, pToken))
+		{// 存在此ID
+			msg_info->nStatus[nNum] = pFriend->nStatus;
+			strcpy_s(msg_info->ListID[nNum], pFriend->nID);
+			memcpy(msg_info->ListName[nNum], pFriend->Name, NAME_MAX);
+		}
+		++nNum;
+		pToken = strtok_s(NULL, ",", &pTokenNext); 
+	}
+	msg_info->nNum = nNum;
+	// 完成
+	return TRUE;
+}
+
+
+int CData::SetAllUserStatus(int nStatus)
+{
+	POSITION pos = m_userlist.GetHeadPosition();
+	struct USERINFO *puif = NULL;
+	while(pos != NULL)
+	{
+		puif = m_userlist.GetNext(pos);
+		puif->nStatus = nStatus;
+	}
+	return 0;
 }

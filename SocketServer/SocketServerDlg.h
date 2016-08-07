@@ -57,7 +57,7 @@ public:
 	int GetFriendList(struct MSG_USERINFO * msg, CChatSocket * pSocket); // 获得好友列表
 	int GetStrangerInfo(struct MSG_USERINFO * msg, CChatSocket * pSocket); // 获得陌生人信息
 	int SetUserStatus(struct MSG_USERINFO * msg, CChatSocket * pSocket); // 设置在线状态
-
+	int GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, CChatSocket* pSocket);
 
 	CString m_csOutMsg;
 	CString m_csSendMsg;
@@ -81,6 +81,9 @@ public:
 
 	int SendSystemMsg(struct MSG_SYS * msg);
 	afx_msg void OnDataDialog();
+
+//	afx_msg void OnBnClickedBtTest();
+	afx_msg void OnBnClickedBtTest();
 };
 
 
