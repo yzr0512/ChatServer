@@ -565,13 +565,15 @@ int CSocketServerDlg::SetUserStatus(struct MSG_USERINFO * msg_userinfo, CChatSoc
 // 刷新列表控件的内容
 int CSocketServerDlg::RefreshListCtrlData(void)
 {
+	/*
 	// 删除所有数据
 	m_lstClient.DeleteAllItems();
+	
 	if(m_listSocketChat.IsEmpty())
 	{
 		return 1;
 	}
-
+	
 	// 遍历m_listSocketChat 输出里面所有不为空的ID
 	POSITION pos = m_listSocketChat.GetHeadPosition();
 	CChatSocket *pChatSocket;
@@ -583,7 +585,7 @@ int CSocketServerDlg::RefreshListCtrlData(void)
 			m_lstClient.InsertItem(0, pChatSocket->ID); 
 		}		
 	}
-
+	*/
 	if(m_pDataDlg != NULL)
 	{
 		m_pDataDlg->RefreshListCtrlData(&m_data);
@@ -731,12 +733,13 @@ void CSocketServerDlg::OnDataDialog()
 	if(m_pDataDlg == NULL)
 	{
 		m_pDataDlg = new CDataDlg(this);
-		m_pDataDlg->Create(IDD_DATA_DLG);
+		m_pDataDlg->Create(IDD_DATA_DLG, GetDesktopWindow());
 		m_pDataDlg->ShowWindow(SW_SHOW);
 		m_pDataDlg->RefreshListCtrlData(&m_data);
 	}
 
 }
+
 
 /*********************************************************
 函数名称：GetAllFriendInfo
@@ -761,5 +764,5 @@ void CSocketServerDlg::OnBnClickedBtTest()
 {
 	m_data.SetAllUserStatus(IDS_STATUS_OFFLINE);
 	RefreshListCtrlData();
-
+	m_listSocketChat.RemoveAll();
 }

@@ -28,7 +28,7 @@ protected:
 	HICON m_hIcon;
 
 	CListenSocket *m_pSocketListen; //用于监听
-	CData m_data; // 账号数据
+	
 	
 	CList<CChatSocket *, CChatSocket *> m_listSocketChat; // 存放与用户通信的Socket的链表
 	CList<struct MSG_TRANSPOND*, struct MSG_TRANSPOND*> m_listChatMsg; // 存放未接收消息的链表
@@ -62,10 +62,8 @@ public:
 	CString m_csOutMsg;
 	CString m_csSendMsg;
 	CListCtrl m_lstClient;
-
+	CData m_data; // 账号数据
 	CDataDlg *m_pDataDlg; // 数据管理窗口
-protected:
-
 
 public:
 	int RefreshListCtrlData(void);

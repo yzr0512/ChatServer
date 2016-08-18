@@ -1,4 +1,4 @@
-// DataDlg.cpp : ÊµÏÖÎÄ¼þ
+ï»¿// DataDlg.cpp : å®žçŽ°æ–‡ä»¶
 //
 
 #include "stdafx.h"
@@ -7,7 +7,7 @@
 #include "afxdialogex.h"
 #include "SocketServerDlg.h"
 
-// CDataDlg ¶Ô»°¿ò
+// CDataDlg å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(CDataDlg, CDialogEx)
 
@@ -30,26 +30,37 @@ void CDataDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDataDlg, CDialogEx)
+	ON_BN_CLICKED(IDC_BT_SAVE_DATA, &CDataDlg::OnBnClickedBtSaveData)
+	ON_BN_CLICKED(IDC_BT_LOAD_DATA, &CDataDlg::OnBnClickedBtLoadData)
 END_MESSAGE_MAP()
 
 
-// CDataDlg ÏûÏ¢´¦Àí³ÌÐò
+// CDataDlg æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
 BOOL CDataDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  ÔÚ´ËÌí¼Ó¶îÍâµÄ³õÊ¼»¯
+	// TODO:  åœ¨æ­¤æ·»åŠ é¢å¤–çš„åˆå§‹åŒ–
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// Òì³£: OCX ÊôÐÔÒ³Ó¦·µ»Ø FALSE
+	// å¼‚å¸¸: OCX å±žæ€§é¡µåº”è¿”å›ž FALSE
 }
 
 
+void CDataDlg::OnCancel()
+{
+	// TODO: åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
+
+	((CSocketServerDlg *)m_pParentWnd)->m_pDataDlg = NULL;
+	DestroyWindow();
+
+	//CDialogEx::OnCancel();
+}
 void CDataDlg::PostNcDestroy()
 {
-	// TODO: ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
+	// TODO: åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
 
 	delete this;
 
@@ -57,15 +68,6 @@ void CDataDlg::PostNcDestroy()
 
 }
 
-void CDataDlg::OnCancel()
-{
-	// TODO: ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
-
-	((CSocketServerDlg *)m_pParentWnd)->m_pDataDlg = NULL;
-	DestroyWindow();
-
-	//CDialogEx::OnCancel();
-}
 
 void CDataDlg::RefreshListCtrlData(const CData * pData)
 {
@@ -73,5 +75,20 @@ void CDataDlg::RefreshListCtrlData(const CData * pData)
 
 	UpdateData(FALSE);
 
+
 }
 
+
+void CDataDlg::OnBnClickedBtSaveData()
+{
+	// TODO: Ã”ÃšÂ´Ã‹ÃŒÃ­Â¼Ã“Â¿Ã˜Â¼Ã¾ÃÂ¨Ã–ÂªÂ´Â¦Ã€Ã­Â³ÃŒÃÃ²Â´ÃºÃ‚Ã«
+	((CSocketServerDlg*)m_pParentWnd)->m_data.SaveData();
+}
+
+
+void CDataDlg::OnBnClickedBtLoadData()
+{
+	// TODO: Ã”ÃšÂ´Ã‹ÃŒÃ­Â¼Ã“Â¿Ã˜Â¼Ã¾ÃÂ¨Ã–ÂªÂ´Â¦Ã€Ã­Â³ÃŒÃÃ²Â´ÃºÃ‚Ã«
+	((CSocketServerDlg*)m_pParentWnd)->m_data.LoadData();
+	((CSocketServerDlg*)m_pParentWnd)->RefreshListCtrlData();
+}

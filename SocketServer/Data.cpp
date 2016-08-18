@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "Data.h"
 #include "resource.h"
 
@@ -19,11 +19,11 @@ CData::~CData()
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºIsExist
-¹¦ÄÜÃèÊö£º¼ì²énIDÊÇ·ñ´æÔÚ ²¢·µ»ØÖ¸Õë
-²ÎÊýËµÃ÷£ºpUserInfo-ÒòÎªÐèÒªÐÞ¸ÄÖ¸ÕëµÄÖ¸Ïò ËùÒÔÒªË«ÖØÖ¸Õë
-		nID-±»¼ì²éµÄÓÃ»§ÕËºÅ
-·µ »Ø Öµ£º·µ»Ø¼ÙµÄÊ±ºòpUserInfo = NULL£¬
+å‡½æ•°åç§°ï¼šIsExist
+åŠŸèƒ½æè¿°ï¼šæ£€æŸ¥nIDæ˜¯å¦å­˜åœ¨ å¹¶è¿”å›žæŒ‡é’ˆ
+å‚æ•°è¯´æ˜Žï¼špUserInfo-å› ä¸ºéœ€è¦ä¿®æ”¹æŒ‡é’ˆçš„æŒ‡å‘ æ‰€ä»¥è¦åŒé‡æŒ‡é’ˆ
+		nID-è¢«æ£€æŸ¥çš„ç”¨æˆ·è´¦å·
+è¿” å›ž å€¼ï¼šè¿”å›žå‡çš„æ—¶å€™pUserInfo = NULLï¼Œ
 *********************************************************/
 BOOL CData::IsExist(struct USERINFO **pUserInfo, const char* nID)const
 {
@@ -42,38 +42,38 @@ BOOL CData::IsExist(struct USERINFO **pUserInfo, const char* nID)const
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºIsCorrect
-¹¦ÄÜÃèÊö£º¼ì²éÕËºÅºÍÃÜÂëÊÇ·ñÆ¥Åä
-²ÎÊýËµÃ÷£ºnID-ÓÃ»§ÕËºÅ password-ÓÃ»§ÃÜÂë
-·µ »Ø Öµ£ºTRUE-ÃÜÂëÕýÈ·
-          IDS_ERR_PASSWD_INCORRECT-ÃÜÂë´íÎó
-		  IDS_ERR_USER_NOT_EXIST-ÓÃ»§²»´æÔÚ
+å‡½æ•°åç§°ï¼šIsCorrect
+åŠŸèƒ½æè¿°ï¼šæ£€æŸ¥è´¦å·å’Œå¯†ç æ˜¯å¦åŒ¹é…
+å‚æ•°è¯´æ˜Žï¼šnID-ç”¨æˆ·è´¦å· password-ç”¨æˆ·å¯†ç 
+è¿” å›ž å€¼ï¼šTRUE-å¯†ç æ­£ç¡®
+          IDS_ERR_PASSWD_INCORRECT-å¯†ç é”™è¯¯
+		  IDS_ERR_USER_NOT_EXIST-ç”¨æˆ·ä¸å­˜åœ¨
 *********************************************************/
-int CData::IsCorrect(const char * nID, const char * password)const // ¼ì²éÃÜÂëÓëÕËºÅÊÇ·ñ¶ÔÓ¦
+int CData::IsCorrect(const char * nID, const char * password)const // æ£€æŸ¥å¯†ç ä¸Žè´¦å·æ˜¯å¦å¯¹åº”
 {
 	struct USERINFO* pUserInfo = NULL;
 	//IsExist(&pUserInfo, nID);
 	if(!IsExist(&pUserInfo, nID))
-	{// ÓÃ»§²»´æÔÚ
+	{// ç”¨æˆ·ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST; 
 	}
 	
 	if(!strcmp(pUserInfo->PassWord, password))
-	{// ÃÜÂëÕýÈ·
+	{// å¯†ç æ­£ç¡®
 		return TRUE;			
 	}
 	else
-	{// ÃÜÂë´íÎó
+	{// å¯†ç é”™è¯¯
 		return IDS_ERR_PASSWD_INCORRECT;	
 	}
 }
 
 		
 /*********************************************************
-º¯ÊýÃû³Æ£ºGetUserStatus
-¹¦ÄÜÃèÊö£º»ñµÃnIDµÄ×´Ì¬ÐÅÏ¢ 
-²ÎÊýËµÃ÷£ºnID-ÕËºÅ
-·µ »Ø Öµ£ºnStatus-×´Ì¬(ERR_USER_NOT_EXIT±íÊ¾ÕËºÅ²»´æÔÚ)
+å‡½æ•°åç§°ï¼šGetUserStatus
+åŠŸèƒ½æè¿°ï¼šèŽ·å¾—nIDçš„çŠ¶æ€ä¿¡æ¯ 
+å‚æ•°è¯´æ˜Žï¼šnID-è´¦å·
+è¿” å›ž å€¼ï¼šnStatus-çŠ¶æ€(ERR_USER_NOT_EXITè¡¨ç¤ºè´¦å·ä¸å­˜åœ¨)
 *********************************************************/
 int CData::GetUserStatus(const char* nID)const
 {	
@@ -87,20 +87,20 @@ int CData::GetUserStatus(const char* nID)const
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºGetUserInfo
-¹¦ÄÜÃèÊö£º»ñµÃÄ³¸öIDµÄÈ«²¿ÐÅÏ¢ 
-²ÎÊýËµÃ÷£ºuser-´¢´æÓÃ»§ÐÅÏ¢µÄ½á¹¹Ìå nID-ÕËºÅ
-·µ »Ø Öµ£º
+å‡½æ•°åç§°ï¼šGetUserInfo
+åŠŸèƒ½æè¿°ï¼šèŽ·å¾—æŸä¸ªIDçš„å…¨éƒ¨ä¿¡æ¯ 
+å‚æ•°è¯´æ˜Žï¼šuser-å‚¨å­˜ç”¨æˆ·ä¿¡æ¯çš„ç»“æž„ä½“ nID-è´¦å·
+è¿” å›ž å€¼ï¼š
 *********************************************************/
 int CData::GetUserInfo(struct USERINFO &user, const char * nID)const
 {
 	struct USERINFO *pInfo = NULL;
 	if(!IsExist(&pInfo, nID))
-	{// ÕËºÅ²»´æÔÚ
+	{// è´¦å·ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 
 	}
-	// ¿½±´ÐÅÏ¢
+	// æ‹·è´ä¿¡æ¯
 	strcpy_s(user.nID, pInfo->nID);
 	strcpy_s(user.Name, pInfo->Name);
 	strcpy_s(user.Email, pInfo->Email);
@@ -117,11 +117,11 @@ int CData::GetUserInfo(struct MSG_USERINFO &user, const char * nID)const
 {
 	struct USERINFO *pInfo = NULL;
 	if(!IsExist(&pInfo, nID))
-	{// ÕËºÅ²»´æÔÚ
+	{// è´¦å·ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}	
 
-	// ¿½±´ÐÅÏ¢
+	// æ‹·è´ä¿¡æ¯
 	strcpy_s(user.nID, pInfo->nID);
 	memcpy(user.Name, pInfo->Name, NAME_MAX);
 	//strcpy_s(user.Name, pInfo->Name);
@@ -141,21 +141,21 @@ int CData::GetUserInfo(struct MSG_USERINFO &user, const char * nID)const
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºGetUserPublicInfo
-¹¦ÄÜÃèÊö£º»ñµÃÄ³¸öIDµÄ¹«¿ªÐÅÏ¢ 
-²ÎÊýËµÃ÷£ºuser-´¢´æÓÃ»§ÐÅÏ¢µÄ½á¹¹Ìå nID-ÕËºÅ
-·µ »Ø Öµ£º
-±¸    ×¢£º¹«¿ªÐÅÏ¢ÓÐ ID¡¢êÇ³Æ¡¢ÓÊÏä¡¢×´Ì¬¡¢ÐÔ±ð
+å‡½æ•°åç§°ï¼šGetUserPublicInfo
+åŠŸèƒ½æè¿°ï¼šèŽ·å¾—æŸä¸ªIDçš„å…¬å¼€ä¿¡æ¯ 
+å‚æ•°è¯´æ˜Žï¼šuser-å‚¨å­˜ç”¨æˆ·ä¿¡æ¯çš„ç»“æž„ä½“ nID-è´¦å·
+è¿” å›ž å€¼ï¼š
+å¤‡    æ³¨ï¼šå…¬å¼€ä¿¡æ¯æœ‰ IDã€æ˜µç§°ã€é‚®ç®±ã€çŠ¶æ€ã€æ€§åˆ«
 *********************************************************/
-int CData::GetUserPublicInfo(struct MSG_USERINFO &user, const char * nID)const// »ñµÃÄ³¸öIDµÄ¹«¿ªÐÅÏ¢
+int CData::GetUserPublicInfo(struct MSG_USERINFO &user, const char * nID)const// èŽ·å¾—æŸä¸ªIDçš„å…¬å¼€ä¿¡æ¯
 {
 	struct USERINFO *pInfo = NULL;
 	if(!IsExist(&pInfo, nID))
-	{// ÕËºÅ²»´æÔÚ
+	{// è´¦å·ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}	
 
-	// ¿½±´ÐÅÏ¢
+	// æ‹·è´ä¿¡æ¯
 	strcpy_s(user.nID, pInfo->nID);
 	//strcpy_s(user.Name, pInfo->Name);
 	memcpy(user.Name, pInfo->Name, NAME_MAX);
@@ -173,18 +173,18 @@ int CData::GetUserPublicInfo(struct MSG_USERINFO &user, const char * nID)const//
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºAddUser
-¹¦ÄÜÃèÊö£ºÌí¼ÓÓÃ»§
-²ÎÊýËµÃ÷£ºnID-ÕËºÅ(·µ»ØÖµ) password-ÃÜÂë email-ÓÊÏä name-êÇ³Æ sex-ÐÔ±ð
-	age-ÄêÁä nStatus-×´Ì¬
-·µ »Ø Öµ£ºTRUE-Ìí¼Ó³É¹¦
-±¸    ×¢£ºÍ¨¹ýnID·µ»Ø×¢²áµÄID£¬²»ÄÜ×ÔÓÉÉèÖÃID
+å‡½æ•°åç§°ï¼šAddUser
+åŠŸèƒ½æè¿°ï¼šæ·»åŠ ç”¨æˆ·
+å‚æ•°è¯´æ˜Žï¼šnID-è´¦å·(è¿”å›žå€¼) password-å¯†ç  email-é‚®ç®± name-æ˜µç§° sex-æ€§åˆ«
+	age-å¹´é¾„ nStatus-çŠ¶æ€
+è¿” å›ž å€¼ï¼šTRUE-æ·»åŠ æˆåŠŸ
+å¤‡    æ³¨ï¼šé€šè¿‡nIDè¿”å›žæ³¨å†Œçš„IDï¼Œä¸èƒ½è‡ªç”±è®¾ç½®ID
 *********************************************************/
 BOOL CData::AddUser(char* nID, char* password, char* email, char* name,
 		char sex, int age, int nStatus)
 {
 	struct USERINFO *pUserInfo = new struct USERINFO;
-	// ÉèÖÃ¸÷ÖÖÐÅÏ¢
+	// è®¾ç½®å„ç§ä¿¡æ¯
 	strcpy_s(pUserInfo->PassWord, password); // password
 	if(email) // email
 		strcpy_s(pUserInfo->Email, email);
@@ -198,14 +198,14 @@ BOOL CData::AddUser(char* nID, char* password, char* email, char* name,
 
 	CTime tm = CTime::GetCurrentTime();	
 	CString strDate = tm.Format("%Y%m%d%H%M%S");
-	size_t i; // ÒÑ×ª»»µÄ×Ö·ûÊý
-	wcstombs_s(&i, pUserInfo->RegDate, strDate, strDate.GetLength() + 1); // ¿í×Ö·û×ª¶à×Ö·û
+	size_t i; // å·²è½¬æ¢çš„å­—ç¬¦æ•°
+	wcstombs_s(&i, pUserInfo->RegDate, strDate, strDate.GetLength() + 1); // å®½å­—ç¬¦è½¬å¤šå­—ç¬¦
 	//wcstombs(pUserInfo->RegDate, strDate, strDate.GetLength() + 1); 
 
-	// ½«Ö¸Õë¼ÓÈëÁ´±íÖÐ
+	// å°†æŒ‡é’ˆåŠ å…¥é“¾è¡¨ä¸­
 	m_userlist.AddTail(pUserInfo);
 
-	// ½«ID·µ»Ø
+	// å°†IDè¿”å›ž
 	strcpy_s(nID, sizeof(pUserInfo->nID), pUserInfo->nID);
 
 	return TRUE;
@@ -218,10 +218,10 @@ BOOL CData::AddUser(char* nID, struct MSG_REGISTER* msg_reg)
 	if(msg_reg->Email) // email
 		strcpy_s(pUserInfo->Email, msg_reg->Email);
 	
-	if(strlen(msg_reg->Name) != 0) // Èç¹ûÃ»ÓÐÉèÖÃÃû×ÖÔòÓÃÕËºÅ´úÌæ
+	if(strlen(msg_reg->Name) != 0) // å¦‚æžœæ²¡æœ‰è®¾ç½®åå­—åˆ™ç”¨è´¦å·ä»£æ›¿
 		memcpy(pUserInfo->Name, msg_reg->Name, NAME_MAX);
 	else	
-		mbstowcs((TCHAR *)pUserInfo->Name, msg_reg->nID, strlen(msg_reg->nID)); // ¶à×Ö·û×ª¿í×Ö·û
+		mbstowcs((TCHAR *)pUserInfo->Name, msg_reg->nID, strlen(msg_reg->nID)); // å¤šå­—ç¬¦è½¬å®½å­—ç¬¦
 
 	pUserInfo->Sex = msg_reg->Sex; // sex
 	pUserInfo->nAge = msg_reg->nAge; // age
@@ -231,11 +231,11 @@ BOOL CData::AddUser(char* nID, struct MSG_REGISTER* msg_reg)
 
 	CTime tm = CTime::GetCurrentTime();	
 	CString strDate = tm.Format("%Y%m%d%H%M%S");		
-	size_t i; // ÒÑ×ª»»µÄ×Ö·ûÊý
-	wcstombs_s(&i, pUserInfo->RegDate, strDate, strDate.GetLength() + 1); // ¿í×Ö·û×ª¶à×Ö·û
+	size_t i; // å·²è½¬æ¢çš„å­—ç¬¦æ•°
+	wcstombs_s(&i, pUserInfo->RegDate, strDate, strDate.GetLength() + 1); // å®½å­—ç¬¦è½¬å¤šå­—ç¬¦
 	//wcstombs(pUserInfo->RegDate, strDate, strDate.GetLength() + 1);
 
-	// ½«Ö¸Õë¼ÓÈëÁ´±íÖÐ
+	// å°†æŒ‡é’ˆåŠ å…¥é“¾è¡¨ä¸­
 	m_userlist.AddTail(pUserInfo);
 
 	strcpy_s(nID, sizeof(pUserInfo->nID), pUserInfo->nID);
@@ -245,11 +245,11 @@ BOOL CData::AddUser(char* nID, struct MSG_REGISTER* msg_reg)
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºDeleteUser
-¹¦ÄÜÃèÊö£ºÉ¾³ýÓÃ»§
-²ÎÊýËµÃ÷£ºnID-ÕËºÅ
-·µ »Ø Öµ£º³É¹¦·µ»ØTRUE
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šDeleteUser
+åŠŸèƒ½æè¿°ï¼šåˆ é™¤ç”¨æˆ·
+å‚æ•°è¯´æ˜Žï¼šnID-è´¦å·
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
+å¤‡    æ³¨ï¼š
 *********************************************************/
 int CData::DeleteUser(const char* nID)
 {
@@ -261,7 +261,7 @@ int CData::DeleteUser(const char* nID)
 		if(!strcmp(pUserInfo->nID, nID))
 		{
 			delete pUserInfo;
-			m_userlist.GetPrev(pos); // ÒòÎªposÒÑ¾­Ö¸ÏòÁËÏÂÒ»¸öÔªËØ ½«pos»Ö¸´
+			m_userlist.GetPrev(pos); // å› ä¸ºposå·²ç»æŒ‡å‘äº†ä¸‹ä¸€ä¸ªå…ƒç´  å°†posæ¢å¤
 			m_userlist.RemoveAt(pos); 
 			return TRUE;
 		}
@@ -271,20 +271,20 @@ int CData::DeleteUser(const char* nID)
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºGetUserFriendList
-¹¦ÄÜÃèÊö£º»ñµÃÓÃ»§ºÃÓÑÁÐ±í
-²ÎÊýËµÃ÷£ºfriendlist-ºÃÓÑÁÐ±í×Ö·û´® nID-ÕËºÅ
-·µ »Ø Öµ£º³É¹¦·µ»ØTRUE
-±¸    ×¢£ººÃÓÑÁÐ±íÓÃ","·Ö¸î
+å‡½æ•°åç§°ï¼šGetUserFriendList
+åŠŸèƒ½æè¿°ï¼šèŽ·å¾—ç”¨æˆ·å¥½å‹åˆ—è¡¨
+å‚æ•°è¯´æ˜Žï¼šfriendlist-å¥½å‹åˆ—è¡¨å­—ç¬¦ä¸² nID-è´¦å·
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
+å¤‡    æ³¨ï¼šå¥½å‹åˆ—è¡¨ç”¨","åˆ†å‰²
 *********************************************************/
 int CData::GetUserFriendList(char * friendlist, const char * nID)const
 {
 	struct USERINFO* pUserInfo = NULL;
 	if(!IsExist(&pUserInfo, nID))
-	{// ÕËºÅ²»´æÔÚ
+	{// è´¦å·ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}
-	// ¸´ÖÆÐÅÏ¢
+	// å¤åˆ¶ä¿¡æ¯
 	strcpy_s(friendlist, sizeof(pUserInfo->FriendList), pUserInfo->FriendList);
 	
 	return TRUE;
@@ -292,18 +292,18 @@ int CData::GetUserFriendList(char * friendlist, const char * nID)const
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºSetUserStatus
-¹¦ÄÜÃèÊö£ºÉèÖÃ¸ÃIDµÄ×´Ì¬
-²ÎÊýËµÃ÷£ºnID-ÕËºÅ nStatus-ÒªÉèÖÃ³ÉµÄ×´Ì¬
-·µ »Ø Öµ£º³É¹¦·µ»ØTRUE
-±¸    ×¢£ººÃÓÑÁÐ±íÓÃ","·Ö¸î
+å‡½æ•°åç§°ï¼šSetUserStatus
+åŠŸèƒ½æè¿°ï¼šè®¾ç½®è¯¥IDçš„çŠ¶æ€
+å‚æ•°è¯´æ˜Žï¼šnID-è´¦å· nStatus-è¦è®¾ç½®æˆçš„çŠ¶æ€
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
+å¤‡    æ³¨ï¼šå¥½å‹åˆ—è¡¨ç”¨","åˆ†å‰²
 *********************************************************/
 int CData::SetUserStatus(const char * nID, int nStatus)
 {
 	POSITION pos = m_userlist.GetHeadPosition();
 	struct USERINFO* pUserInfo = NULL;
 	if(!IsExist(&pUserInfo, nID))
-	{// ÕËºÅ²»´æÔÚ
+	{// è´¦å·ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}
 
@@ -314,17 +314,17 @@ int CData::SetUserStatus(const char * nID, int nStatus)
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºMakeFriend
-¹¦ÄÜÃèÊö£º½«Á½¸önID½¨Á¢ºÃÓÑ¹ØÏµ
-²ÎÊýËµÃ÷£ºnID1-ÕËºÅ1  nID2-ÕËºÅ2
-´´½¨Ê±¼ä£º2016-08-03
-·µ »Ø Öµ£º³É¹¦·µ»ØTRUE
+å‡½æ•°åç§°ï¼šMakeFriend
+åŠŸèƒ½æè¿°ï¼šå°†ä¸¤ä¸ªnIDå»ºç«‹å¥½å‹å…³ç³»
+å‚æ•°è¯´æ˜Žï¼šnID1-è´¦å·1  nID2-è´¦å·2
+åˆ›å»ºæ—¶é—´ï¼š2016-08-03
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
 *********************************************************/
 int CData::MakeFriend(const char * nID1, const char * nID2)
 {
-		// 2016-08-04ÐÞ¸Ä
-		// ÐÞ¸ÄÔ­Òò£º½µµÍÇ¶Ì×²ãÊý
-		// Ô­´úÂë£º
+		// 2016-08-04ä¿®æ”¹
+		// ä¿®æ”¹åŽŸå› ï¼šé™ä½ŽåµŒå¥—å±‚æ•°
+		// åŽŸä»£ç ï¼š
 	/*POSITION pos = m_userlist.GetHeadPosition();
 	struct USERINFO* pInfo = NULL;
 	IsExist(pInfo, nID1);
@@ -332,35 +332,35 @@ int CData::MakeFriend(const char * nID1, const char * nID2)
 	{
 		pInfo = m_userlist.GetNext(pos);
 		if(!strcmp(pInfo->nID, nID1))
-		{// ÕÒµ½µÚÒ»¸öID
+		{// æ‰¾åˆ°ç¬¬ä¸€ä¸ªID
 			char FriLst[FRIEND_MAX * ID_MAX];
 			char *pToken;
-			bool Flag = FALSE; // ÓÃÀ´±ê¼ÇÊÇ·ñ´æÔÚ´ËºÃÓÑ
+			bool Flag = FALSE; // ç”¨æ¥æ ‡è®°æ˜¯å¦å­˜åœ¨æ­¤å¥½å‹
 			strcpy(FriLst, pInfo->FriendList);
-			pToken = strtok(FriLst, ","); // ·Ö¸îºÃÓÑÁÐ±í
+			pToken = strtok(FriLst, ","); // åˆ†å‰²å¥½å‹åˆ—è¡¨
 			while(pToken != NULL)
 			{
 				if(!strcmp(pToken, nID2))
-				{//ÒÑ´æÔÚ´ËºÃÓÑ
+				{//å·²å­˜åœ¨æ­¤å¥½å‹
 					Flag = TRUE;
 					return FALSE;
 				}
 				pToken = strtok(NULL, ",");
 			}
 			
-			// ²éÕÒµÚ¶þ¸öID
+			// æŸ¥æ‰¾ç¬¬äºŒä¸ªID
 			POSITION pos2 = m_userlist.GetHeadPosition();
 			struct USERINFO* pInfo2;
 			while(pos2 != NULL)
 			{
 				pInfo2 = m_userlist.GetNext(pos2);
 				if(!strcmp(pInfo2->nID, nID2))
-				{// ÕÒµ½µÚ¶þ¸öIDÒ²´æÔÚ
-					strcat_s(pInfo->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-					strcat_s(pInfo->FriendList, nID2); // Ìí¼ÓID
+				{// æ‰¾åˆ°ç¬¬äºŒä¸ªIDä¹Ÿå­˜åœ¨
+					strcat_s(pInfo->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+					strcat_s(pInfo->FriendList, nID2); // æ·»åŠ ID
 
-					strcat_s(pInfo2->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-					strcat_s(pInfo2->FriendList, nID1); // Ìí¼ÓID
+					strcat_s(pInfo2->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+					strcat_s(pInfo2->FriendList, nID1); // æ·»åŠ ID
 					return 1;
 				}
 			}
@@ -374,56 +374,56 @@ int CData::MakeFriend(const char * nID1, const char * nID2)
 	struct USERINFO* pInfo = NULL;
 	struct USERINFO* pInfo2 = NULL;
 	if(!IsExist(&pInfo, nID1))
-	{// ÕËºÅÒ»²»´æÔÚ
+	{// è´¦å·ä¸€ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}
 	if(!IsExist(&pInfo2, nID2))
-	{// ÕËºÅ¶þ²»´æÔÚ
+	{// è´¦å·äºŒä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;	
 	}
 
 	if(!strcmp(nID1, nID2))
-	{// Á½¸öÕËºÅÏàÍ¬
+	{// ä¸¤ä¸ªè´¦å·ç›¸åŒ
 		return IDS_ERR_FRIEND_ADD_SELF;	
 	}
 
-	// ¼ì²éÁ½ÈËÊÇ·ñÒÑÊÇºÃÓÑ¹ØÏµ
+	// æ£€æŸ¥ä¸¤äººæ˜¯å¦å·²æ˜¯å¥½å‹å…³ç³»
 	char FriLst[FRIEND_MAX * ID_MAX];
-	strcpy_s(FriLst, pInfo->FriendList); // ¸´ÖÆºÃÓÑÁÐ±í		
-	bool Flag = FALSE; // ÓÃÀ´±ê¼ÇÊÇ·ñ´æÔÚ´ËºÃÓÑ
-	char *pToken = NULL; // ·Ö¸îºÃÓÑÁÐ±í
+	strcpy_s(FriLst, pInfo->FriendList); // å¤åˆ¶å¥½å‹åˆ—è¡¨		
+	bool Flag = FALSE; // ç”¨æ¥æ ‡è®°æ˜¯å¦å­˜åœ¨æ­¤å¥½å‹
+	char *pToken = NULL; // åˆ†å‰²å¥½å‹åˆ—è¡¨
 	char *pTokenNext = NULL;
 	pToken = strtok_s(FriLst, ",", &pTokenNext); 
 	while(pToken != NULL)
 	{
 		if(!strcmp(pToken, nID2))
-		{//ÒÑ´æÔÚ´ËºÃÓÑ
+		{//å·²å­˜åœ¨æ­¤å¥½å‹
 			Flag = TRUE;
 			return IDS_ERR_FRIEND_HAD_EXIST;
 		}
 		//pToken = strtok(NULL, ",");
-		pToken = strtok_s(NULL, ",", &pTokenNext); // °²È«°æ±¾
+		pToken = strtok_s(NULL, ",", &pTokenNext); // å®‰å…¨ç‰ˆæœ¬
 	}						
 	
-	// Á½ÈË²»ÊÇºÃÓÑ¹ØÏµ¾ÍÔÚË«·½ÁÐ±íÄ©Î²¼ÓÉÏ
+	// ä¸¤äººä¸æ˜¯å¥½å‹å…³ç³»å°±åœ¨åŒæ–¹åˆ—è¡¨æœ«å°¾åŠ ä¸Š
 	if(strlen(pInfo->FriendList) == 0)
-	{// Ê×¸öºÃÓÑ Ö±½ÓÌí¼Ó
-		strcat_s(pInfo->FriendList, nID2); // Ìí¼ÓID
+	{// é¦–ä¸ªå¥½å‹ ç›´æŽ¥æ·»åŠ 
+		strcat_s(pInfo->FriendList, nID2); // æ·»åŠ ID
 	}
 	else
-	{// ·ÇÊ×¸öºÃÓÑ ÐèÒª½ÓÉÏ·Ö¸ô·û
-		strcat_s(pInfo->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-		strcat_s(pInfo->FriendList, nID2); // Ìí¼ÓID
+	{// éžé¦–ä¸ªå¥½å‹ éœ€è¦æŽ¥ä¸Šåˆ†éš”ç¬¦
+		strcat_s(pInfo->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+		strcat_s(pInfo->FriendList, nID2); // æ·»åŠ ID
 	}
 	
 	if(strlen(pInfo2->FriendList) == 0)
-	{// Ê×¸öºÃÓÑ Ö±½ÓÌí¼Ó
-		strcat_s(pInfo2->FriendList, nID1); // Ìí¼ÓID
+	{// é¦–ä¸ªå¥½å‹ ç›´æŽ¥æ·»åŠ 
+		strcat_s(pInfo2->FriendList, nID1); // æ·»åŠ ID
 	}
 	else
-	{// ·ÇÊ×¸öºÃÓÑ ÐèÒª½ÓÉÏ·Ö¸ô·û
-		strcat_s(pInfo2->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-		strcat_s(pInfo2->FriendList, nID1); // Ìí¼ÓID
+	{// éžé¦–ä¸ªå¥½å‹ éœ€è¦æŽ¥ä¸Šåˆ†éš”ç¬¦
+		strcat_s(pInfo2->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+		strcat_s(pInfo2->FriendList, nID1); // æ·»åŠ ID
 	}
 
 	return TRUE;
@@ -431,16 +431,16 @@ int CData::MakeFriend(const char * nID1, const char * nID2)
 
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºBreakFriend
-¹¦ÄÜÃèÊö£º½«Á½¸önIDÉ¾³ýºÃÓÑ¹ØÏµ
-²ÎÊýËµÃ÷£ºnID1-ÕËºÅ1  nID2-ÕËºÅ2
-´´½¨Ê±¼ä£º2016-08-03
-·µ »Ø Öµ£º³É¹¦·µ»ØTRUE
+å‡½æ•°åç§°ï¼šBreakFriend
+åŠŸèƒ½æè¿°ï¼šå°†ä¸¤ä¸ªnIDåˆ é™¤å¥½å‹å…³ç³»
+å‚æ•°è¯´æ˜Žï¼šnID1-è´¦å·1  nID2-è´¦å·2
+åˆ›å»ºæ—¶é—´ï¼š2016-08-03
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
 *********************************************************/
 int CData::BreakFriend(const char * nID1, const char * nID2)
 {
-		// 2016-08-04ÐÞ¸Ä
-		// Ô­´úÂë	
+		// 2016-08-04ä¿®æ”¹
+		// åŽŸä»£ç 	
 	/*
 	POSITION pos = m_userlist.GetHeadPosition();
 	struct USERINFO* pInfo;
@@ -451,68 +451,68 @@ int CData::BreakFriend(const char * nID1, const char * nID2)
 		{
 			char FriLst[FRIEND_MAX * ID_MAX];
 			char *pToken;
-			bool Flag = FALSE; // ÓÃÀ´±ê¼ÇÊÇ·ñ´æÔÚ´ËºÃÓÑ
+			bool Flag = FALSE; // ç”¨æ¥æ ‡è®°æ˜¯å¦å­˜åœ¨æ­¤å¥½å‹
 			strcpy(FriLst, pInfo->FriendList);
-			pToken = strtok(FriLst, ","); // ·Ö¸îºÃÓÑÁÐ±í
+			pToken = strtok(FriLst, ","); // åˆ†å‰²å¥½å‹åˆ—è¡¨
 			
-			// Çå¿ÕºÃÓÑÁÐ±í
+			// æ¸…ç©ºå¥½å‹åˆ—è¡¨
 			memset(pInfo->FriendList, 0, FRIEND_MAX * ID_MAX * sizeof(char));
 
 			while(pToken != NULL)
 			{
 				if(strcmp(pToken, nID2))
-				{//Èç¹ûpToken²»ÊÇID2¾Í½«Æä¸´ÖÆµ½Friendlist
+				{//å¦‚æžœpTokenä¸æ˜¯ID2å°±å°†å…¶å¤åˆ¶åˆ°Friendlist
 					if(strlen(pInfo->FriendList) == 0)
-					{//	µÚÒ»¸öºÃÓÑ
-						strcat_s(pInfo->FriendList, pToken); // Ìí¼ÓID						
+					{//	ç¬¬ä¸€ä¸ªå¥½å‹
+						strcat_s(pInfo->FriendList, pToken); // æ·»åŠ ID						
 					}
 					else
-					{// ·ÇµÚÒ»¸öºÃÓÑ
-						strcat_s(pInfo->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-						strcat_s(pInfo->FriendList, pToken); // Ìí¼ÓID
+					{// éžç¬¬ä¸€ä¸ªå¥½å‹
+						strcat_s(pInfo->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+						strcat_s(pInfo->FriendList, pToken); // æ·»åŠ ID
 					}
 				}
 				else
 				{
-					Flag = TRUE; // ´æÔÚ´ËºÃÓÑ ÔòÏÂÃæÒ²ÐèÒª¼ÌÐøÖ´ÐÐ
+					Flag = TRUE; // å­˜åœ¨æ­¤å¥½å‹ åˆ™ä¸‹é¢ä¹Ÿéœ€è¦ç»§ç»­æ‰§è¡Œ
 				}
-				pToken = strtok(NULL, ","); // ¼ÌÐø·Ö¸îÊ£ÓàµÄºÃÓÑID
+				pToken = strtok(NULL, ","); // ç»§ç»­åˆ†å‰²å‰©ä½™çš„å¥½å‹ID
 			}
 			
-			if(!Flag) // ²»´æÔÚ´ËºÃÓÑ ÏÂÃæ²»ÐèÒª¼ÌÐøÖ´ÐÐ
+			if(!Flag) // ä¸å­˜åœ¨æ­¤å¥½å‹ ä¸‹é¢ä¸éœ€è¦ç»§ç»­æ‰§è¡Œ
 				return FALSE;
 
-			// ²éÕÒµÚ¶þ¸öID
+			// æŸ¥æ‰¾ç¬¬äºŒä¸ªID
 			POSITION pos2 = m_userlist.GetHeadPosition();
 			struct USERINFO* pInfo2;			
 			while(pos2 != NULL)
 			{
 				pInfo2 = m_userlist.GetNext(pos2);
 				if(!strcmp(pInfo2->nID, nID2))
-				{// ÕÒµ½µÚ¶þ¸öIDÒ²´æÔÚ
-					strcpy(FriLst, pInfo2->FriendList); // ¿½±´Ô­ºÃÓÑÁÐ±í
-					pToken = strtok(FriLst, ","); // ·Ö¸îºÃÓÑÁÐ±í
-					// Çå¿ÕºÃÓÑÁÐ±í
+				{// æ‰¾åˆ°ç¬¬äºŒä¸ªIDä¹Ÿå­˜åœ¨
+					strcpy(FriLst, pInfo2->FriendList); // æ‹·è´åŽŸå¥½å‹åˆ—è¡¨
+					pToken = strtok(FriLst, ","); // åˆ†å‰²å¥½å‹åˆ—è¡¨
+					// æ¸…ç©ºå¥½å‹åˆ—è¡¨
 					memset(pInfo2->FriendList, 0, FRIEND_MAX * ID_MAX * sizeof(char));
 					while(pToken != NULL)
 					{
 						if(strcmp(pToken, nID1))
-						{//Èç¹ûpToken²»ÊÇID1¾Í½«Æä¸´ÖÆµ½Friendlist
+						{//å¦‚æžœpTokenä¸æ˜¯ID1å°±å°†å…¶å¤åˆ¶åˆ°Friendlist
 							if(strlen(pInfo2->FriendList) == 0)
-							{//	µÚÒ»¸öºÃÓÑ
-								strcat_s(pInfo2->FriendList, pToken); // Ìí¼ÓID						
+							{//	ç¬¬ä¸€ä¸ªå¥½å‹
+								strcat_s(pInfo2->FriendList, pToken); // æ·»åŠ ID						
 							}
 							else
-							{// ·ÇµÚÒ»¸öºÃÓÑ
-								strcat_s(pInfo2->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-								strcat_s(pInfo2->FriendList, pToken); // Ìí¼ÓID
+							{// éžç¬¬ä¸€ä¸ªå¥½å‹
+								strcat_s(pInfo2->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+								strcat_s(pInfo2->FriendList, pToken); // æ·»åŠ ID
 							}
 						}
-						pToken = strtok(NULL, ","); // ¼ÌÐø·Ö¸îÊ£ÓàµÄºÃÓÑID
+						pToken = strtok(NULL, ","); // ç»§ç»­åˆ†å‰²å‰©ä½™çš„å¥½å‹ID
 					}
 				}
 			}
-			// Ë«·½¶¼É¾³ýÍê³É
+			// åŒæ–¹éƒ½åˆ é™¤å®Œæˆ
 			return TRUE;
 		}
 	}
@@ -521,177 +521,193 @@ int CData::BreakFriend(const char * nID1, const char * nID2)
 	struct USERINFO* pInfo = NULL;
 	struct USERINFO* pInfo2 = NULL;
 	if(!IsExist(&pInfo, nID1))
-	{// ÕËºÅÒ»²»´æÔÚ
+	{// è´¦å·ä¸€ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}
 	if(!IsExist(&pInfo2, nID2))
-	{// ÕËºÅ¶þ²»´æÔÚ
+	{// è´¦å·äºŒä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}
 	char FriLst[FRIEND_MAX * ID_MAX];
-	strcpy_s(FriLst, pInfo->FriendList); // ¸´ÖÆÔ­ºÃÓÑÁÐ±í
+	strcpy_s(FriLst, pInfo->FriendList); // å¤åˆ¶åŽŸå¥½å‹åˆ—è¡¨
 	
-	memset(pInfo->FriendList, 0, FRIEND_MAX * ID_MAX * sizeof(char)); // Çå¿ÕÔ­ºÃÓÑÁÐ±í
+	memset(pInfo->FriendList, 0, FRIEND_MAX * ID_MAX * sizeof(char)); // æ¸…ç©ºåŽŸå¥½å‹åˆ—è¡¨
 	
-	bool Flag = FALSE; // ÓÃÀ´±ê¼ÇÊÇ·ñ´æÔÚ´ËºÃÓÑ
+	bool Flag = FALSE; // ç”¨æ¥æ ‡è®°æ˜¯å¦å­˜åœ¨æ­¤å¥½å‹
 
-	char *pToken = NULL;// ·Ö¸îºÃÓÑÁÐ±í
+	char *pToken = NULL;// åˆ†å‰²å¥½å‹åˆ—è¡¨
 	char *pTokenNext = NULL;
 	pToken = strtok_s(FriLst, ",", &pTokenNext); 
 	while(pToken != NULL)
 	{
 		if(strcmp(pToken, nID2))
-		{//Èç¹ûpToken²»ÊÇID2¾Í½«Æä¸´ÖÆµ½Friendlist
+		{//å¦‚æžœpTokenä¸æ˜¯ID2å°±å°†å…¶å¤åˆ¶åˆ°Friendlist
 			if(strlen(pInfo->FriendList) == 0)
-			{//	µÚÒ»¸öºÃÓÑ
-				strcat_s(pInfo->FriendList, pToken); // Ìí¼ÓID						
+			{//	ç¬¬ä¸€ä¸ªå¥½å‹
+				strcat_s(pInfo->FriendList, pToken); // æ·»åŠ ID						
 			}
 			else
-			{// ·ÇµÚÒ»¸öºÃÓÑ
-				strcat_s(pInfo->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-				strcat_s(pInfo->FriendList, pToken); // Ìí¼ÓID
+			{// éžç¬¬ä¸€ä¸ªå¥½å‹
+				strcat_s(pInfo->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+				strcat_s(pInfo->FriendList, pToken); // æ·»åŠ ID
 			}
 		}
 		else
 		{
-			Flag = TRUE; // ´æÔÚ´ËºÃÓÑ ÔòÏÂÃæÒ²ÐèÒª¼ÌÐøÖ´ÐÐ
+			Flag = TRUE; // å­˜åœ¨æ­¤å¥½å‹ åˆ™ä¸‹é¢ä¹Ÿéœ€è¦ç»§ç»­æ‰§è¡Œ
 		}
-		//pToken = strtok(NULL, ","); // ¼ÌÐø·Ö¸îÊ£ÓàµÄºÃÓÑID
+		//pToken = strtok(NULL, ","); // ç»§ç»­åˆ†å‰²å‰©ä½™çš„å¥½å‹ID
 		pToken = strtok_s(NULL, ",", &pTokenNext);
 	}
 
-	if(!Flag) // ²»´æÔÚ´ËºÃÓÑ ÏÂÃæ²»ÐèÒª¼ÌÐøÖ´ÐÐ
+	if(!Flag) // ä¸å­˜åœ¨æ­¤å¥½å‹ ä¸‹é¢ä¸éœ€è¦ç»§ç»­æ‰§è¡Œ
 		return IDS_ERR_FRIEND_NOT_EXIST;
 
-	strcpy_s(FriLst, pInfo2->FriendList); // ¿½±´Ô­ºÃÓÑÁÐ±í
-	memset(pInfo2->FriendList, 0, FRIEND_MAX * ID_MAX * sizeof(char)); // Çå¿ÕºÃÓÑÁÐ±í	
+	strcpy_s(FriLst, pInfo2->FriendList); // æ‹·è´åŽŸå¥½å‹åˆ—è¡¨
+	memset(pInfo2->FriendList, 0, FRIEND_MAX * ID_MAX * sizeof(char)); // æ¸…ç©ºå¥½å‹åˆ—è¡¨	
 	pTokenNext = NULL;
-	pToken = strtok_s(FriLst, ",", &pTokenNext); // ·Ö¸îºÃÓÑÁÐ±í			
+	pToken = strtok_s(FriLst, ",", &pTokenNext); // åˆ†å‰²å¥½å‹åˆ—è¡¨			
 	while(pToken != NULL)
 	{
 		if(strcmp(pToken, nID1))
-		{//Èç¹ûpToken²»ÊÇID1¾Í½«Æä¸´ÖÆµ½Friendlist
+		{//å¦‚æžœpTokenä¸æ˜¯ID1å°±å°†å…¶å¤åˆ¶åˆ°Friendlist
 			if(strlen(pInfo2->FriendList) == 0)
-			{//	µÚÒ»¸öºÃÓÑ
-				strcat_s(pInfo2->FriendList, pToken); // Ìí¼ÓID						
+			{//	ç¬¬ä¸€ä¸ªå¥½å‹
+				strcat_s(pInfo2->FriendList, pToken); // æ·»åŠ ID						
 			}
 			else
-			{// ·ÇµÚÒ»¸öºÃÓÑ
-				strcat_s(pInfo2->FriendList, ","); // Ìí¼Ó·Ö¸ô·û
-				strcat_s(pInfo2->FriendList, pToken); // Ìí¼ÓID
+			{// éžç¬¬ä¸€ä¸ªå¥½å‹
+				strcat_s(pInfo2->FriendList, ","); // æ·»åŠ åˆ†éš”ç¬¦
+				strcat_s(pInfo2->FriendList, pToken); // æ·»åŠ ID
 			}
 		}
-		//pToken = strtok(NULL, ","); // ¼ÌÐø·Ö¸îÊ£ÓàµÄºÃÓÑID
+		//pToken = strtok(NULL, ","); // ç»§ç»­åˆ†å‰²å‰©ä½™çš„å¥½å‹ID
 		pToken = strtok_s(NULL, ",", &pTokenNext);
 	}
-	return TRUE; // Ë«·½¶¼É¾³ýÍê³É
+	return TRUE; // åŒæ–¹éƒ½åˆ é™¤å®Œæˆ
 }
 
 
-// ±£´æÊý¾Ý 
-//   Èô²ÎÊýÎª¿ÕÔòÔÚÔËÐÐÄ¿Â¼ÄÚ±£´æ
-//   ±£´æ³É¹¦·µ»ØÕæ
+/*********************************************************
+å‡½æ•°åç§°ï¼šLoadData
+åŠŸèƒ½æè¿°ï¼šä¿å­˜è´¦å·æ•°æ®
+åˆ›å»ºæ—¶é—´ï¼š2016-08-18
+å‚æ•°è¯´æ˜Žï¼š
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
+*********************************************************/
 BOOL CData::SaveData(CString csFilePath)const
 {
+	CFile file;	
+	//int nReadBytes = 0; //å­˜å‚¨æ–‡ä»¶ä¸­è¯»å–çš„æ€»å­—èŠ‚æ•°
+
+	if(!file.Open(L".//data.txt", CFile::modeWrite | CFile::modeCreate))
+	{
+		return FALSE;
+	}
+	POSITION pos = m_userlist.GetHeadPosition();
+	while(pos != NULL)
+	{
+		USERINFO *p = m_userlist.GetNext(pos);
+		file.Write(p, sizeof(*p));
+	}
+	file.Close();
+
+
 
 	return TRUE;
 }
 
-// ¼ÓÔØÊý¾Ý
-// 
-BOOL LoadData(CString csFilePath = L"")
-{
-
-	return FALSE;
-}
-
-void CData::ShowData(CListCtrl * pListCtrl)const
-{
-	// É¾³ýËùÓÐÐÐ
-	pListCtrl->DeleteAllItems();
-	// É¾³ýËùÓÐÁÐ
-	CHeaderCtrl* pHeaderCtrl = pListCtrl->GetHeaderCtrl();
-	if (pHeaderCtrl != NULL)
-	{
-		int  nColumnCount = pHeaderCtrl->GetItemCount();
-		for (int i=0; i<nColumnCount; i++)
-		{
-			pListCtrl->DeleteColumn(0);
-		}
-	}
-
-	// ¸øm_lstctlDataÌí¼Ó±íÍ·
-	CRect rect;
-	pListCtrl->GetClientRect(&rect);
-	int nColInterval = rect.Width();
-	pListCtrl->SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
-
-	pListCtrl->InsertColumn(0, _T("ID"), LVCFMT_CENTER,			int(nColInterval / 7));   
-    pListCtrl->InsertColumn(1, _T("Name"), LVCFMT_CENTER,		int(nColInterval / 7));
-	pListCtrl->InsertColumn(2, _T("Email"), LVCFMT_CENTER,		int(nColInterval / 7));   
-	pListCtrl->InsertColumn(3, _T("Sex"), LVCFMT_CENTER,		int(nColInterval / 7));   
-	pListCtrl->InsertColumn(4, _T("Age"), LVCFMT_CENTER,		int(nColInterval / 7));    
-	pListCtrl->InsertColumn(5, _T("Status"), LVCFMT_CENTER,		int(nColInterval / 7));   
-	pListCtrl->InsertColumn(6, _T("RegDate"), LVCFMT_CENTER,	int(nColInterval / 7));
-	//pListCtrl->InsertColumn(7, _T("PassWord"), LVCFMT_CENTER,	int(nColInterval / 7));
-	// Ìí¼ÓÊý¾Ý
-	int i = 0;
-	POSITION pos = m_userlist.GetHeadPosition();
-	struct USERINFO *puif = NULL;
-	while(pos != NULL)
-	{
-		puif = m_userlist.GetNext(pos);
-		CString strTemp; // ÓÃÓÚ×ª»»¶à×Ö·û
-
-		//strTemp.Format("%s", puif->nID); // nIDÊÇ¶à×Ö·û
-		strTemp = puif->nID;
-		pListCtrl->InsertItem(i, strTemp);
-		strTemp = (LPCTSTR)puif->Name; // êÇ³ÆÊÇÒÔ¿í×Ö·ûÀ´´¢´æ
-		pListCtrl->SetItemText(i, 1, strTemp);
-		strTemp = puif->Email; // EmailÊÇ¶à×Ö·û
-		pListCtrl->SetItemText(i, 2, strTemp); 
-		strTemp = puif->Sex; // SexÊÇµ¥×Ö·û
-		pListCtrl->SetItemText(i, 3, strTemp); 
-		strTemp.Format(L"%d", puif->nAge); // ÄêÁäÊÇÊý×Ö
-		pListCtrl->SetItemText(i, 4, strTemp); 
-		strTemp.Format(L"%d", puif->nStatus); // ×´Ì¬ÊÇÊý×Ö
-		pListCtrl->SetItemText(i, 5, strTemp); 
-		strTemp = puif->RegDate; // ×¢²áÈÕÆÚÊÇ¶à×Ö·û
-		pListCtrl->SetItemText(i, 6, strTemp);
-		//strTemp = puif->PassWord; // ÃÜÂëÊÇ¶à×Ö·û
-		//pListCtrl->SetItemText(i, 7, strTemp);
-		++i;	
-	}
-}
 
 /*********************************************************
-º¯ÊýÃû³Æ£ºGetAllFriendInfo
-¹¦ÄÜÃèÊö£º»ñµÃÄ³¸öIDËùÓÐºÃÓÑµÄ»ù±¾ÐÅÏ¢
-´´½¨Ê±¼ä£º2016-08-07
-²ÎÊýËµÃ÷£ºmsg_info-´¢´æËùÓÐÐÅÏ¢µÄ½á¹¹Ìå
-·µ »Ø Öµ£º³É¹¦·µ»ØTRUE
+å‡½æ•°åç§°ï¼šLoadData
+åŠŸèƒ½æè¿°ï¼šåŠ è½½è´¦å·æ•°æ®
+åˆ›å»ºæ—¶é—´ï¼š2016-08-18
+å‚æ•°è¯´æ˜Žï¼šmsg_info-å‚¨å­˜æ‰€æœ‰ä¿¡æ¯çš„ç»“æž„ä½“
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
+*********************************************************/
+BOOL CData::LoadData(CString csFilePath)
+{
+	CFile file;
+	if(!file.Open(L".//data.txt", CFile::modeReadWrite))
+	{
+		return FALSE;
+	}
+	
+	POSITION pos = m_userlist.GetHeadPosition();
+	while(pos != NULL)
+	{
+		USERINFO *p = m_userlist.GetNext(pos);
+		//delete p;
+		if(pos == NULL)
+		{// å·²ç»åˆ°äº†é“¾è¡¨å°¾
+			m_userlist.RemoveTail();
+		}
+		else
+		{
+			m_userlist.GetPrev(pos);
+			m_userlist.RemoveAt(pos);
+			pos = m_userlist.GetHeadPosition();
+		}
+	}
+	
+	int maxID;
+	
+	while(TRUE)
+	{
+		USERINFO *p = new USERINFO;
+		int nRet = file.Read(p, sizeof(USERINFO));
+		p->nStatus = IDS_STATUS_OFFLINE; // çŠ¶æ€é‡ç½®	
+		
+		maxID = atoi(p->nID);
+		if(m_MaxID <= maxID)
+		{
+			m_MaxID = maxID;
+		}
+		
+		if(nRet == 0)
+		{
+			delete p;
+			break;
+		}
+		else
+		{
+			m_userlist.AddTail(p);		
+		}
+	}
+	file.Close();
+
+	return TRUE;
+}
+
+
+/*********************************************************
+å‡½æ•°åç§°ï¼šGetAllFriendInfo
+åŠŸèƒ½æè¿°ï¼šèŽ·å¾—æŸä¸ªIDæ‰€æœ‰å¥½å‹çš„åŸºæœ¬ä¿¡æ¯
+åˆ›å»ºæ—¶é—´ï¼š2016-08-07
+å‚æ•°è¯´æ˜Žï¼šmsg_info-å‚¨å­˜æ‰€æœ‰ä¿¡æ¯çš„ç»“æž„ä½“
+è¿” å›ž å€¼ï¼šæˆåŠŸè¿”å›žTRUE
 *********************************************************/
 int CData::GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, char* nID)
 {
 	struct USERINFO *pUser = NULL;
 	if(!IsExist(&pUser, nID))
-	{// ÓÃ»§²»´æÔÚ
+	{// ç”¨æˆ·ä¸å­˜åœ¨
 		return IDS_ERR_USER_NOT_EXIST;
 	}
 	
 	char FriLst[FRIEND_MAX * ID_MAX];
 	//memcpy(FriLst, pUser->FriendList, FRIEND_MAX * ID_MAX);
-	strcpy_s(FriLst, pUser->FriendList); // ¸´ÖÆºÃÓÑÁÐ±í
+	strcpy_s(FriLst, pUser->FriendList); // å¤åˆ¶å¥½å‹åˆ—è¡¨
 
-	int nNum = 0; // ¼ÇÂ¼ºÃÓÑÊýÄ¿
-	char *pToken = NULL; // ·Ö¸îºÃÓÑÁÐ±í
+	int nNum = 0; // è®°å½•å¥½å‹æ•°ç›®
+	char *pToken = NULL; // åˆ†å‰²å¥½å‹åˆ—è¡¨
 	char *pTokenNext = NULL;
 	pToken = strtok_s(FriLst, ",", &pTokenNext); 
 	while(pToken != NULL)
 	{
 		struct USERINFO *pFriend = NULL;
 		if(IsExist(&pFriend, pToken))
-		{// ´æÔÚ´ËID
+		{// å­˜åœ¨æ­¤ID
 			msg_info->nStatus[nNum] = pFriend->nStatus;
 			strcpy_s(msg_info->ListID[nNum], pFriend->nID);
 			memcpy(msg_info->ListName[nNum], pFriend->Name, NAME_MAX);
@@ -700,11 +716,14 @@ int CData::GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, char* nID)
 		pToken = strtok_s(NULL, ",", &pTokenNext); 
 	}
 	msg_info->nNum = nNum;
-	// Íê³É
+	// å®Œæˆ
 	return TRUE;
 }
 
 
+// ä¸‹é¢æ˜¯ä¸´æ—¶çš„å‡½æ•° æœ‰å¯èƒ½ä¼šåˆ é™¤æŽ‰
+
+// è®¾ç½®æ‰€æœ‰ç”¨æˆ·çš„åœ¨çº¿çŠ¶æ€
 int CData::SetAllUserStatus(int nStatus)
 {
 	POSITION pos = m_userlist.GetHeadPosition();
@@ -715,4 +734,66 @@ int CData::SetAllUserStatus(int nStatus)
 		puif->nStatus = nStatus;
 	}
 	return 0;
+}
+
+// è¾“å‡ºä¿¡æ¯
+void CData::ShowData(CListCtrl * pListCtrl)const
+{
+	// åˆ é™¤æ‰€æœ‰è¡Œ
+	pListCtrl->DeleteAllItems();
+	// åˆ é™¤æ‰€æœ‰åˆ—
+	CHeaderCtrl* pHeaderCtrl = pListCtrl->GetHeaderCtrl();
+	if (pHeaderCtrl != NULL)
+	{
+		int  nColumnCount = pHeaderCtrl->GetItemCount();
+		for (int i=0; i<nColumnCount; i++)
+		{
+			pListCtrl->DeleteColumn(0);
+		}
+	}
+
+	// ç»™m_lstctlDataæ·»åŠ è¡¨å¤´
+	CRect rect;
+	pListCtrl->GetClientRect(&rect);
+	int nColInterval = rect.Width();
+	pListCtrl->SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+
+	pListCtrl->InsertColumn(0, _T("ID"), LVCFMT_CENTER,			int(nColInterval / 8));   
+    pListCtrl->InsertColumn(1, _T("Name"), LVCFMT_CENTER,		int(nColInterval / 8));
+	pListCtrl->InsertColumn(2, _T("Email"), LVCFMT_CENTER,		int(nColInterval / 8));   
+	pListCtrl->InsertColumn(3, _T("Sex"), LVCFMT_CENTER,		int(nColInterval / 8));   
+	pListCtrl->InsertColumn(4, _T("Age"), LVCFMT_CENTER,		int(nColInterval / 8));    
+	pListCtrl->InsertColumn(5, _T("Status"), LVCFMT_CENTER,		int(nColInterval / 8));   
+	pListCtrl->InsertColumn(6, _T("RegDate"), LVCFMT_CENTER,	int(nColInterval / 8));
+	pListCtrl->InsertColumn(7, _T("PassWord"), LVCFMT_CENTER,	int(nColInterval / 8));
+	
+	// æ·»åŠ æ•°æ®
+	int i = 0;
+	POSITION pos = m_userlist.GetHeadPosition();
+	struct USERINFO *puif = NULL;
+	while(pos != NULL)
+	{
+		puif = m_userlist.GetNext(pos);
+		CString strTemp; // ç”¨äºŽè½¬æ¢å¤šå­—ç¬¦
+
+		//strTemp.Format("%s", puif->nID); // nIDæ˜¯å¤šå­—ç¬¦
+		strTemp = puif->nID;
+		pListCtrl->InsertItem(i, strTemp);
+		strTemp = (LPCTSTR)puif->Name; // æ˜µç§°æ˜¯ä»¥å®½å­—ç¬¦æ¥å‚¨å­˜
+		pListCtrl->SetItemText(i, 1, strTemp);
+		strTemp = puif->Email; // Emailæ˜¯å¤šå­—ç¬¦
+		pListCtrl->SetItemText(i, 2, strTemp); 
+		strTemp = puif->Sex; // Sexæ˜¯å•å­—ç¬¦
+		pListCtrl->SetItemText(i, 3, strTemp); 
+		strTemp.Format(L"%d", puif->nAge); // å¹´é¾„æ˜¯æ•°å­—
+		pListCtrl->SetItemText(i, 4, strTemp); 
+		//strTemp.Format(L"%d", puif->nStatus); // çŠ¶æ€æ˜¯æ•°å­—
+		strTemp.LoadStringW(puif->nStatus);
+		pListCtrl->SetItemText(i, 5, strTemp); 
+		strTemp = puif->RegDate; // æ³¨å†Œæ—¥æœŸæ˜¯å¤šå­—ç¬¦
+		pListCtrl->SetItemText(i, 6, strTemp);
+		strTemp = puif->PassWord; // å¯†ç æ˜¯å¤šå­—ç¬¦
+		pListCtrl->SetItemText(i, 7, strTemp);
+		++i;	
+	}
 }

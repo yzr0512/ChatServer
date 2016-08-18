@@ -35,5 +35,7 @@ protected:
 public:
 	CListCtrl m_lstctlData;
 
+	afx_msg void OnBnClickedBtSaveData();
+	afx_msg void OnBnClickedBtLoadData();
 };
 
