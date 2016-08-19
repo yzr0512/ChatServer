@@ -26,16 +26,21 @@ public:
 	virtual BOOL OnInitDialog();
 	virtual void PostNcDestroy();
 	virtual void OnCancel();
-
-	void RefreshListCtrlData(const CData * pData);
+	afx_msg void OnBnClickedBtSaveData();
+	afx_msg void OnBnClickedBtLoadData();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	
+	void RefreshListCtrlData();
+	void SetData(CData* pData);
+	int RefreshCtrlPosition(void);
+	
+	CListCtrl m_lstctlData;
 
 protected:
 	CWnd* m_pParentWnd; // Ö÷´°¿Ú
+	CData* m_pData;
 
 public:
-	CListCtrl m_lstctlData;
-
-	afx_msg void OnBnClickedBtSaveData();
-	afx_msg void OnBnClickedBtLoadData();
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 };
 

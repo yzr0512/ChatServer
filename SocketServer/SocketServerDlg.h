@@ -82,6 +82,7 @@ public:
 
 //	afx_msg void OnBnClickedBtTest();
 	afx_msg void OnBnClickedBtTest();
+	afx_msg void OnClose();
 };
 
 

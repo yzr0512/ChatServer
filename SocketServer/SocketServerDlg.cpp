@@ -48,6 +48,7 @@ BEGIN_MESSAGE_MAP(CSocketServerDlg, CDialogEx)
 	ON_COMMAND(ID_DATA_DIALOG, &CSocketServerDlg::OnDataDialog)
 	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
 	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -63,9 +64,11 @@ BOOL CSocketServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	
+		
+	m_data.LoadData(); // 读取用户数据
+
+
 	//初始化客户端列表
-	
 	// 获取列表控件的宽度
 	CRect rect;
 	m_lstClient.GetClientRect(&rect);
@@ -554,8 +557,6 @@ int CSocketServerDlg::SetUserStatus(struct MSG_USERINFO * msg_userinfo, CChatSoc
 }
 
 
-
-
 // 遍历未发送的消息
 
 // 遍历socket 看看是否保持连接
@@ -588,7 +589,7 @@ int CSocketServerDlg::RefreshListCtrlData(void)
 	*/
 	if(m_pDataDlg != NULL)
 	{
-		m_pDataDlg->RefreshListCtrlData(&m_data);
+		m_pDataDlg->RefreshListCtrlData();
 	}
 
 	return 0;
@@ -734,8 +735,9 @@ void CSocketServerDlg::OnDataDialog()
 	{
 		m_pDataDlg = new CDataDlg(this);
 		m_pDataDlg->Create(IDD_DATA_DLG, GetDesktopWindow());
-		m_pDataDlg->ShowWindow(SW_SHOW);
-		m_pDataDlg->RefreshListCtrlData(&m_data);
+		m_pDataDlg->ShowWindow(SW_SHOW);		
+		m_pDataDlg->SetData(&m_data);
+		m_pDataDlg->RefreshListCtrlData();
 	}
 
 }
@@ -760,9 +762,24 @@ int CSocketServerDlg::GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, CChatSock
 }
 
 
+// 测试按钮
 void CSocketServerDlg::OnBnClickedBtTest()
 {
 	m_data.SetAllUserStatus(IDS_STATUS_OFFLINE);
 	RefreshListCtrlData();
 	m_listSocketChat.RemoveAll();
+}
+
+
+/*********************************************************
+函数名称：OnClose
+功能描述：窗口关闭时 自动保存数据
+创建时间：2016-08-19
+参数说明：
+返 回 值：
+*********************************************************/
+void CSocketServerDlg::OnClose()
+{
+	m_data.SaveData();
+	CDialogEx::OnClose();
 }
