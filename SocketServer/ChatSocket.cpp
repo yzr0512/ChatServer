@@ -17,6 +17,7 @@
 CChatSocket::CChatSocket(CWnd *pWnd)
 {
 	m_pParentWnd = pWnd;
+	m_tmLastMsg = CTime::GetTickCount();
 }
 
 CChatSocket::~CChatSocket()
@@ -30,8 +31,9 @@ CChatSocket::~CChatSocket()
 void CChatSocket::OnReceive(int nErrorCode)
 {
 	// TODO: 在此添加专用代码和/或调用基类
+	m_tmLastMsg = CTime::GetTickCount();
 	((CSocketServerDlg*)m_pParentWnd)->RecvMsg(this);
-
+	
 
 	CSocket::OnReceive(nErrorCode);
 }

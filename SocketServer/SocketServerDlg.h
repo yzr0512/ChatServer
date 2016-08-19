@@ -83,6 +83,8 @@ public:
 //	afx_msg void OnBnClickedBtTest();
 	afx_msg void OnBnClickedBtTest();
 	afx_msg void OnClose();
+	int CheckSocketStatus(void);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 

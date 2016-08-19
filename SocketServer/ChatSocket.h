@@ -14,6 +14,8 @@ public:
 	CString ID;
 	char m_userID[ID_MAX];
 
+	CTime m_tmLastMsg; // 最后通信时间
+
 protected:
 	CWnd *m_pParentWnd;
 

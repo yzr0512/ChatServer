@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CSocketServerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
 	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
 	ON_WM_CLOSE()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -152,6 +153,9 @@ int CSocketServerDlg::OpenServer(void)
 	}
 	
 	m_pSocketListen->Listen(); //启动监听
+
+	SetTimer(123, 10000, NULL); // 定时刷新Socket
+
 	OutputInfo(IDS_SERVER_OPEN_SUCCESS); // 输出信息
 
 	return IDS_SERVER_OPEN_SUCCESS;
@@ -198,6 +202,7 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 		OutputInfo(_T("SOCKET_ERROR"));
 		return 0;
 	}
+	
 	switch(msg->nType)
 	{
 	case LOGIN: // 登录消息
@@ -228,7 +233,11 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 		AddFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
 	case DELETE_FRIEND: // 删除好友
 		DeleteFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
-
+	case HEARTBEAT:
+		pSocket->Send(msg, sizeof(MSG_SYS));
+		TRACE(pSocket->m_userID);
+		TRACE("\n");
+		break;
 
 	}
 	return 0;
@@ -344,7 +353,10 @@ int CSocketServerDlg::LoginOut(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 	csOutMsg.Format(_T("用户%s已退出"), csID);
 	OutputInfo(csOutMsg);
 	//pSocket->ID = "";
-	memset(pSocket->m_userID, 0, ID_MAX);
+	//memset(pSocket->m_userID, 0, ID_MAX);
+	pSocket->Close();
+	delete pSocket;
+	pSocket = NULL;
 	// 刷新用户列表
 	RefreshListCtrlData();
 	return 0;
@@ -558,8 +570,6 @@ int CSocketServerDlg::SetUserStatus(struct MSG_USERINFO * msg_userinfo, CChatSoc
 
 
 // 遍历未发送的消息
-
-// 遍历socket 看看是否保持连接
 
 
 
@@ -782,4 +792,81 @@ void CSocketServerDlg::OnClose()
 {
 	m_data.SaveData();
 	CDialogEx::OnClose();
+}
+
+
+/*********************************************************
+函数名称：CheckSocketStatus
+功能描述：检查每个Socket 将其中空的和超时的删除掉
+创建时间：2016-08-19
+参数说明：
+返 回 值：
+*********************************************************/
+int CSocketServerDlg::CheckSocketStatus(void)
+{
+	POSITION pos = m_listSocketChat.GetHeadPosition();
+	while(pos != NULL)
+	{
+		CChatSocket* p = m_listSocketChat.GetNext(pos);
+		// 删除空Socket
+		if(p == NULL)
+		{
+			if(pos == NULL)
+			{// 空Socket位于链表末尾
+				m_listSocketChat.RemoveTail();
+				break;
+			}
+			else
+			{
+				POSITION posTemp = pos;
+				m_listSocketChat.GetPrev(posTemp);
+				m_listSocketChat.RemoveAt(posTemp);
+			}
+			continue;
+		}
+		
+		// 删除超过时间没有通信的Socket
+		int nMaxSec = 30; // 等待的最大时间
+		CTimeSpan tmsp;
+		tmsp = CTime::GetCurrentTime() - p->m_tmLastMsg;
+		TRACE("%d\n", tmsp.GetTotalSeconds());
+		
+		if(tmsp.GetTotalSeconds() >= nMaxSec || tmsp.GetSeconds() < 0)
+		{
+			CString csOutMsg;
+			CString csID;
+			csID = p->m_userID;
+			csOutMsg.Format(_T("用户%s连接超时"), csID);
+			OutputInfo(csOutMsg);
+			
+			m_data.SetUserStatus(p->m_userID, IDS_STATUS_OFFLINE);
+			
+			p->Close(); // 关闭连接
+			delete p; // 释放内存
+			// 删除元素
+			if(pos == NULL)
+			{// 空Socket位于链表末尾				
+				m_listSocketChat.RemoveTail();
+				break;
+			}
+			else
+			{
+				POSITION posTemp = pos;
+				m_listSocketChat.GetPrev(posTemp);
+				m_listSocketChat.RemoveAt(posTemp);
+			}
+			continue;
+		}
+	}
+	return 0;
+}
+
+
+void CSocketServerDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌÐò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
+
+	CheckSocketStatus();
+
+	CDialogEx::OnTimer(nIDEvent);
 }
