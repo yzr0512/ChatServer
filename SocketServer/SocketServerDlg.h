@@ -35,9 +35,9 @@ protected:
 	CList<struct MSG_SYS*, struct MSG_SYS*> m_listSystemMsg; // 存放未发送的系统消息
 
 	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
+	virtual BOOL OnInitDialog(); // 初始化窗口
+	afx_msg void OnPaint(); // 绘制窗口
+	afx_msg HCURSOR OnQueryDragIcon(); 
 	DECLARE_MESSAGE_MAP()
 public:
 	int OpenServer(void); // 初始化服务器
@@ -59,9 +59,10 @@ public:
 	int SetUserStatus(struct MSG_USERINFO * msg, CChatSocket * pSocket); // 设置在线状态
 	int GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, CChatSocket* pSocket);
 
-	CString m_csOutMsg;
-	CString m_csSendMsg;
-	CListCtrl m_lstClient;
+	CString m_csOutMsg; // 编辑框
+	CString m_csSendMsg; // 要发送的消息
+	CListCtrl m_lstClient; // 客户端列表控件
+
 	CData m_data; // 账号数据
 	CDataDlg *m_pDataDlg; // 数据管理窗口
 
@@ -70,21 +71,23 @@ public:
 
 	CString m_csID;
 	
-	afx_msg void OnLvnItemchangedListClient(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnBnClickedButtonSend();
-	afx_msg void OnBnClickedButtonOpen();
+	afx_msg void OnLvnItemchangedListClient(NMHDR *pNMHDR, LRESULT *pResult); // 列表选中项改变
+	afx_msg void OnBnClickedButtonSend(); // 发送消息
+	afx_msg void OnBnClickedButtonOpen(); // 打开服务器
 	
-	int OutputInfo(const CString& csOutMsg);
-	int OutputInfo(UINT nIDPrompt);
+	int OutputInfo(const CString& csOutMsg); // 在编辑框输出信息
+	int OutputInfo(UINT nIDPrompt); // 在编辑框输出信息
 
-	int SendSystemMsg(struct MSG_SYS * msg);
-	afx_msg void OnDataDialog();
+	int SendSystemMsg(struct MSG_SYS * msg); // 发送系统消息
+	afx_msg void OnDataDialog(); // 打开账号数据窗口
 
-//	afx_msg void OnBnClickedBtTest();
-	afx_msg void OnBnClickedBtTest();
-	afx_msg void OnClose();
-	int CheckSocketStatus(void);
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedBtTest(); // 测试用
+	afx_msg void OnClose(); // 关闭窗口时执行
+	int CheckSocketStatus(void); // 检查每个客户端的连接状态
+	afx_msg void OnTimer(UINT_PTR nIDEvent); // 定时器
+	int FileTransRequest(MSG_FILE_REQUEST *msg_req); // 转发文件传输请求
+	int FileTransAnswer(MSG_FILE_REQUEST *msg_ans); // 转发文件传输回应
+	int SendToID(char* cID, void* msg, int nMsgSize); // 发送消息给制定ID
 };
 
 

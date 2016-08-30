@@ -193,7 +193,7 @@ int CSocketServerDlg::AcceptClient(void)
 *********************************************************/
 int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 {
-	int iBufSize = 4096; // 接收的最大字节数
+	int iBufSize = MSG_SIZE_MAX; // 接收的最大字节数
 	struct MSG_T *msg = new struct MSG_T;
 	int iRes = pSocket->Receive((char *)msg, iBufSize);	
 	if(iRes == SOCKET_ERROR) // 接收失败
@@ -205,21 +205,26 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 	
 	switch(msg->nType)
 	{
+	// 登陆/下线
 	case LOGIN: // 登录消息
-		Login((struct MSG_LOGIN *)msg, pSocket);break;
+		Login((struct MSG_LOGIN *)msg, pSocket);
+		break;
 	case LOGIN_OUT: // 下线消息
-		LoginOut((struct MSG_LOGIN *)msg, pSocket);break;
-
+		LoginOut((struct MSG_LOGIN *)msg, pSocket);
+		break;
+	
+	// 注册
 	case REGISTER: // 注册消息
-		Register((struct MSG_REGISTER *)msg, pSocket);break;
+		Register((struct MSG_REGISTER *)msg, pSocket);
+		break;
+
 
 	case GET_FRIEND_LIST: // 请求获得好友列表
 		GetFriendList((struct MSG_USERINFO *)msg, pSocket);break;
 	case GET_FRIEND_INFO: // 请求获得好友信息
 		GetFriendInfo((struct MSG_USERINFO *)msg, pSocket);break;
 	case GET_ALL_FRIEND_INFO: // 请求获得全部好友的基本信息
-		GetAllFriendInfo((struct MSG_FRND_INFO*)msg, pSocket);
-		break;
+		GetAllFriendInfo((struct MSG_FRND_INFO*)msg, pSocket);break;
 	case GET_STRANGER_INFO: // 请求获得陌生人信息
 		GetStrangerInfo((struct MSG_USERINFO *)msg, pSocket);break;
 	case SET_USER_STATUS: // 设置在线状态
@@ -227,18 +232,34 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 
 	case CHATING_TEXT_MSG: // 聊天消息
 		RelayChatMsg((struct MSG_TRANSPOND *)msg, pSocket);break;
+	
+	// 增删好友
 	case ADD_FRIEND_REQUEST: // 添加好友请求
 		RelayChatMsg((struct MSG_TRANSPOND *)msg, pSocket);break;
 	case ADD_FRIEND_ANSWER: // 添加请求回应
 		AddFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
 	case DELETE_FRIEND: // 删除好友
 		DeleteFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
+	
+	// 心跳包
 	case HEARTBEAT:
 		pSocket->Send(msg, sizeof(MSG_SYS));
-		TRACE(pSocket->m_userID);
-		TRACE("\n");
+		//TRACE(pSocket->m_userID);
+		//TRACE("\n");
+		break;
+	
+	// 文件传输
+	case MESSAGE_FILE_REQUEST: // 发送请求
+		FileTransRequest((MSG_FILE_REQUEST*)msg);
+		break;
+	case MESSAGE_FILE_AGREE: // 同意发送
+	case MESSAGE_FILE_REFUSE: // 拒绝发送
+		FileTransAnswer((MSG_FILE_REQUEST*)msg);
 		break;
 
+	default:
+		MessageBox(L"未定义的数据类型!");
+		break;
 	}
 	return 0;
 }
@@ -354,9 +375,24 @@ int CSocketServerDlg::LoginOut(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 	OutputInfo(csOutMsg);
 	//pSocket->ID = "";
 	//memset(pSocket->m_userID, 0, ID_MAX);
-	pSocket->Close();
-	delete pSocket;
-	pSocket = NULL;
+
+	POSITION pos = m_listSocketChat.GetHeadPosition();
+	while(pos != NULL)
+	{
+		CChatSocket * p = m_listSocketChat.GetAt(pos);
+		if(pSocket == p)
+		{
+			pSocket->Close();
+			delete pSocket;
+			m_listSocketChat.RemoveAt(pos);
+			break;
+		}
+		m_listSocketChat.GetNext(pos);
+	}
+
+	//pSocket->Close();
+	//delete pSocket;
+	//pSocket = NULL;
 	// 刷新用户列表
 	RefreshListCtrlData();
 	return 0;
@@ -862,11 +898,74 @@ int CSocketServerDlg::CheckSocketStatus(void)
 }
 
 
+// 心跳包已关闭
 void CSocketServerDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌÐò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
 
-	CheckSocketStatus();
+	//CheckSocketStatus();
 
 	CDialogEx::OnTimer(nIDEvent);
 }
+
+
+/*********************************************************
+函数名称：SendToID
+功能描述：发送消息给制定的ID
+作者：    余志荣
+创建时间：2016-08-29
+参数说明：cID -- 账号
+		  msg -- 消息内容
+		  nMsgSize -- 消息大小
+返 回 值：
+*********************************************************/
+int CSocketServerDlg::SendToID(char* cID, void* msg, int nMsgSize)
+{
+	POSITION pos = m_listSocketChat.GetHeadPosition();
+	while(pos != NULL)
+	{
+		CChatSocket *p = m_listSocketChat.GetAt(pos);
+		if(!strcmp(p->m_userID, cID))
+		{
+			p->Send(msg, nMsgSize);
+			delete msg;
+			return 0;
+		}
+		m_listSocketChat.GetNext(pos);
+	}
+
+	// 如果对方不在线 则先将消息存起来
+	//m_listChatMsg.AddTail(msg_tran);
+	return 1;
+}
+
+//文件传输
+/*********************************************************
+函数名称：FileTransRequest
+功能描述：转发文件传输请求
+作者：    余志荣
+创建时间：2016-08-29
+参数说明：msg_req -- 请求内容
+返 回 值：
+*********************************************************/
+int CSocketServerDlg::FileTransRequest(MSG_FILE_REQUEST *msg_req)
+{
+	SendToID(msg_req->ToID, msg_req, sizeof(MSG_FILE_REQUEST));
+	return 0;
+}
+
+/*********************************************************
+函数名称：FileTransAnswer
+功能描述：转发文件传输回应
+作者：    余志荣
+创建时间：2016-08-29
+参数说明：msg_ans -- 回应内容
+返 回 值：
+*********************************************************/
+int CSocketServerDlg::FileTransAnswer(MSG_FILE_REQUEST *msg_ans)
+{
+	SendToID(msg_ans->FromID, msg_ans, sizeof(MSG_FILE_REQUEST));
+	return 0;
+}
+
+
+
