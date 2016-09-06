@@ -1,4 +1,12 @@
 ﻿
+/************************************************
+文 件 名：SocketServerDlg.cpp
+作    者：余志荣
+创建日期：2016-08-03
+用    途：服务端主窗口的实现文件
+修改记录：2016-08-03 余志荣 创建
+************************************************/ 
+
 // SocketServerDlg.cpp : 实现文件
 //
 
@@ -15,41 +23,39 @@
 // CSocketServerDlg 对话框
 
 
-/*********************************************************
-函数名称：CSocketServerDlg
-功能描述：构造函数
-
-*********************************************************/
 CSocketServerDlg::CSocketServerDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSocketServerDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_csOutMsg = _T("");
-	m_csSendMsg = _T("");
-	m_csID = _T("");
+	//m_csSendMsg = _T("");
+	//m_csID = _T("");
 	m_pDataDlg = NULL;
+	m_pSocketListen = NULL;
 }
 
 void CSocketServerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_OUT_MSG, m_csOutMsg);
-	DDX_Text(pDX, IDC_EDIT_SEND_MSG, m_csSendMsg);
-	DDX_Control(pDX, IDC_LIST_CLIENT, m_lstClient);
-	DDX_Text(pDX, IDC_EDIT_ID, m_csID);
+	//DDX_Text(pDX, IDC_EDIT_SEND_MSG, m_csSendMsg);
+	//DDX_Control(pDX, IDC_LIST_CLIENT, m_lstClient);
+	//DDX_Text(pDX, IDC_EDIT_ID, m_csID);
+	DDX_Control(pDX, IDC_EDIT_OUT_MSG, m_EditOut);
 }
 
 BEGIN_MESSAGE_MAP(CSocketServerDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_CLIENT, &CSocketServerDlg::OnLvnItemchangedListClient)
-	ON_BN_CLICKED(IDC_BUTTON_SEND, &CSocketServerDlg::OnBnClickedButtonSend)
+	//ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_CLIENT, &CSocketServerDlg::OnLvnItemchangedListClient)
+	//ON_BN_CLICKED(IDC_BUTTON_SEND, &CSocketServerDlg::OnBnClickedButtonSend)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN, &CSocketServerDlg::OnBnClickedButtonOpen)
 	ON_COMMAND(ID_DATA_DIALOG, &CSocketServerDlg::OnDataDialog)
-	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
+	//ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
 	ON_BN_CLICKED(IDC_BT_TEST, &CSocketServerDlg::OnBnClickedBtTest)
 	ON_WM_CLOSE()
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BUTTON_CLOSE, &CSocketServerDlg::OnBnClickedButtonClose)
 END_MESSAGE_MAP()
 
 
@@ -65,28 +71,34 @@ BOOL CSocketServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-		
+	
+	SetBackgroundColor(RGB(255, 255, 255));
+
+
 	m_data.LoadData(); // 读取用户数据
 
+	OnBnClickedButtonOpen(); // 打开服务器
 
-	//初始化客户端列表
-	// 获取列表控件的宽度
-	CRect rect;
-	m_lstClient.GetClientRect(&rect);
-	int nColInterval = rect.Width();
 
-	// 设置ListCtrl的样式
-	//  LVS_EX_GRIDLINES 网格线
-	//  LVS_EX_FULLROWSELECT 整行选中
-	m_lstClient.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 
-	// 插入表头
-	// 参数分别为：列索引（第几列）、列名、列的文字格式、列宽、与列相关联子项的索引
-	//  LVCFMT_CENTER 居中
-	//  LVCFMT_LEFT   左对齐
-	//  LVCFMT_RIGHT  右对齐
-	m_lstClient.InsertColumn(0, _T("客户端列表"), LVCFMT_CENTER, int(nColInterval));   
-   
+	////初始化客户端列表
+	//// 获取列表控件的宽度
+	//CRect rect;
+	//m_lstClient.GetClientRect(&rect);
+	//int nColInterval = rect.Width();
+
+	//// 设置ListCtrl的样式
+	////  LVS_EX_GRIDLINES 网格线
+	////  LVS_EX_FULLROWSELECT 整行选中
+	//m_lstClient.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+
+	//// 插入表头
+	//// 参数分别为：列索引（第几列）、列名、列的文字格式、列宽、与列相关联子项的索引
+	////  LVCFMT_CENTER 居中
+	////  LVCFMT_LEFT   左对齐
+	////  LVCFMT_RIGHT  右对齐
+	//m_lstClient.InsertColumn(0, _T("客户端列表"), LVCFMT_CENTER, int(nColInterval));   
+ 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -130,6 +142,8 @@ HCURSOR CSocketServerDlg::OnQueryDragIcon()
 /*********************************************************
 函数名称：OpenServer
 功能描述：初始化服务器
+作者：    余志荣
+创建日期：2016-08-03
 返 回 值：成功返回IDS_SERVER_OPEN_SUCCESS
 *********************************************************/
 int CSocketServerDlg::OpenServer(void)
@@ -160,12 +174,104 @@ int CSocketServerDlg::OpenServer(void)
 
 	return IDS_SERVER_OPEN_SUCCESS;
 }
+// 开启服务
+void CSocketServerDlg::OnBnClickedButtonOpen()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	OpenServer();
+	CWnd *pWnd = GetDlgItem(IDC_BUTTON_OPEN);
+	pWnd->EnableWindow(FALSE);
+	pWnd = GetDlgItem(IDC_BUTTON_CLOSE);
+	pWnd->EnableWindow(TRUE);
+
+}
+
+/*********************************************************
+函数名称：CloseServer
+功能描述：关闭服务器
+作者：    余志荣
+创建日期：2016-09-01
+返 回 值：成功返回TRUE
+*********************************************************/
+int CSocketServerDlg::CloseServer(void)
+{
+	// 断开所有客户端的连接
+	POSITION pos = m_listSocketChat.GetHeadPosition();
+	POSITION posTemp;
+	while (pos != NULL)
+	{
+		CChatSocket *pSocket = m_listSocketChat.GetNext(pos);
+		pSocket->Close();
+		delete pSocket;
+		posTemp = pos;
+		if(posTemp == NULL)
+		{
+			m_listSocketChat.RemoveTail();
+		}
+		else
+		{
+			m_listSocketChat.GetPrev(posTemp);
+			m_listSocketChat.RemoveAt(posTemp);
+		}
+		/*
+		CChatSocket *pSocket = m_listSocketChat.GetAt(pos);
+		pSocket->Close();
+		delete pSocket;
+		//m_listSocketChat.RemoveAt(pos);
+		m_listSocketChat.GetNext(pos);
+		*/
+	}
+	pos = m_FileSocketList.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CChatSocket *pSocket = m_FileSocketList.GetNext(pos);
+		pSocket->Close();
+		delete pSocket;
+		posTemp = pos;
+		if (pos == NULL)
+		{
+			m_FileSocketList.RemoveTail();
+		} 
+		else
+		{
+			m_FileSocketList.GetPrev(posTemp);
+			m_FileSocketList.RemoveAt(posTemp);
+		}
+		/*
+		CChatSocket *pSocket = m_FileSocketList.GetAt(pos);
+		pSocket->Close();
+		delete pSocket;
+		//m_FileSocketList.RemoveAt(pos);
+		m_FileSocketList.GetNext(pos);
+		*/
+	}
+
+	// 关闭监听
+	m_pSocketListen->Close();
+	delete m_pSocketListen;
+	m_pSocketListen = NULL;
+
+	OutputInfo(L"关闭服务成功。");
+	return TRUE;
+}
+// 关闭服务
+void CSocketServerDlg::OnBnClickedButtonClose()
+{
+	CloseServer();
+	CWnd *pWnd = GetDlgItem(IDC_BUTTON_OPEN);
+	pWnd->EnableWindow(TRUE);
+	pWnd = GetDlgItem(IDC_BUTTON_CLOSE);
+	pWnd->EnableWindow(FALSE);
+}
 
 
 /*********************************************************
 函数名称：AcceptClient
 功能描述：监听连接请求
-返 回 值：无意义
+作者：    余志荣
+创建日期：2016-08-03
+返 回 值：TRUE -- 连接成功
+		  FALSE -- 连接失败
 *********************************************************/
 int CSocketServerDlg::AcceptClient(void)
 {
@@ -176,20 +282,23 @@ int CSocketServerDlg::AcceptClient(void)
 	{// 连接客户端失败
 		delete pSocket;
 		pSocket = NULL;
+		return FALSE;
 	}
 	else
 	{// 连接成功 将pSocket指针加到m_listSocketChat末尾
-		m_listSocketChat.AddTail(pSocket);			
+		m_listSocketChat.AddTail(pSocket);
+		return TRUE;
 	}
-	return 0;
 }
 
 
 /*********************************************************
 函数名称：RecvMsg
 功能描述：接收信息
-参数说明：pSocket-接收到消息的pSocket
-返 回 值：无意义
+作者：    余志荣
+创建日期：2016-08-03
+参数说明：pSocket -- 接收到消息的pSocket
+返 回 值：接收到的字节数
 *********************************************************/
 int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 {
@@ -212,24 +321,21 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 	case LOGIN_OUT: // 下线消息
 		LoginOut((struct MSG_LOGIN *)msg, pSocket);
 		break;
+	case GET_FRIEND_LIST: // 请求获得好友列表
+		GetFriendList((struct MSG_USERINFO *)msg, pSocket);break;
+	case GET_ALL_FRIEND_INFO: // 请求获得全部好友的基本信息
+		GetAllFriendInfo((struct MSG_FRND_INFO*)msg, pSocket);break;
+	case SET_USER_STATUS: // 设置在线状态
+		SetUserStatus((struct MSG_USERINFO *)msg, pSocket);break;
 	
 	// 注册
 	case REGISTER: // 注册消息
 		Register((struct MSG_REGISTER *)msg, pSocket);
 		break;
 
-
-	case GET_FRIEND_LIST: // 请求获得好友列表
-		GetFriendList((struct MSG_USERINFO *)msg, pSocket);break;
+	// 一对一聊天
 	case GET_FRIEND_INFO: // 请求获得好友信息
 		GetFriendInfo((struct MSG_USERINFO *)msg, pSocket);break;
-	case GET_ALL_FRIEND_INFO: // 请求获得全部好友的基本信息
-		GetAllFriendInfo((struct MSG_FRND_INFO*)msg, pSocket);break;
-	case GET_STRANGER_INFO: // 请求获得陌生人信息
-		GetStrangerInfo((struct MSG_USERINFO *)msg, pSocket);break;
-	case SET_USER_STATUS: // 设置在线状态
-		SetUserStatus((struct MSG_USERINFO *)msg, pSocket);break;
-
 	case CHATING_TEXT_MSG: // 聊天消息
 		RelayChatMsg((struct MSG_TRANSPOND *)msg, pSocket);break;
 	
@@ -239,7 +345,10 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 	case ADD_FRIEND_ANSWER: // 添加请求回应
 		AddFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
 	case DELETE_FRIEND: // 删除好友
-		DeleteFriend((struct MSG_TRANSPOND *)msg, pSocket);break;
+		DeleteFriend((MSG_MAKE_FRIEND *)msg, pSocket);break;
+	case GET_STRANGER_INFO: // 请求获得陌生人信息
+		GetStrangerInfo((struct MSG_USERINFO *)msg, pSocket);break;
+
 	
 	// 心跳包
 	case HEARTBEAT:
@@ -254,23 +363,41 @@ int CSocketServerDlg::RecvMsg(CChatSocket * pSocket)
 		break;
 	case MESSAGE_FILE_AGREE: // 同意发送
 	case MESSAGE_FILE_REFUSE: // 拒绝发送
+	case MESSAGE_FILE_ERROR: // 出现错误
 		FileTransAnswer((MSG_FILE_REQUEST*)msg);
 		break;
+	case FILE_TRANS_SOCKET:
+		strcpy_s(pSocket->m_userID, ((MSG_SYS*)msg)->nID);
+		AddToFileSocketList(pSocket);
+		break;
+	case MESSAGE_FILE_TRANS_BEGIN:
+	case MESSAGE_FILE_TRANS_END:
+		FileTransOpera((MSG_FILE_OPERA *)msg, pSocket);
+		//FileTransRelay((MSG_FILE_REQUEST*)msg);// （未使用）
+		break;
+	case MESSAGE_FILE_CONTENT:
+		FileTransRelay((MSG_FILE_CONTENT*)msg);
+		break;
+
+
 
 	default:
-		MessageBox(L"未定义的数据类型!");
+		//MessageBox(L"未定义的数据类型!");
+
 		break;
 	}
-	return 0;
+	return iRes;
 }
 
 
 //下面是各种消息的处理函数
-//
 
+//登录模块
 /*********************************************************
 函数名称：Login
 功能描述：用户登录
+作者：    余志荣
+创建日期：2016-08-03
 参数说明：msg-消息结构体 pSocket-接收到消息的pSocket
 返 回 值：
 *********************************************************/
@@ -313,16 +440,7 @@ int CSocketServerDlg::Login(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 			{//发送失败
 				OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
 				return IDS_ERR_SOCKETS_SEND_FAILED;
-			}
-			/*struct MSG_T msg_reply;
-			msg_reply.nType = LOGIN_FAILED;
-			memset(msg_reply.Data, '\0', sizeof(msg_reply.Data));	
-			memcpy(msg_reply.Data, _T("此账号已登录"), sizeof(_T("此账号已登录")));			
-			if(pSocket->Send((void *)&msg_reply, sizeof(msg_reply)) == 0)
-			{//发送失败
-				OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
-				return IDS_ERR_SOCKETS_SEND_FAILED;
-			}*/			
+			}		
 		}
 	}
 	else if(nRes == IDS_ERR_PASSWD_INCORRECT)
@@ -336,15 +454,6 @@ int CSocketServerDlg::Login(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 			OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);				
 			return IDS_ERR_SOCKETS_SEND_FAILED;
 		}	
-		/*struct MSG_T msg_reply;
-		msg_reply.nType = LOGIN_FAILED;
-		memset(msg_reply.Data, '\0', sizeof(msg_reply.Data));	
-		memcpy(msg_reply.Data, _T("账号或密码不正确"), sizeof(_T("账号或密码不正确")));			
-		if(pSocket->Send((void *)&msg_reply, sizeof(msg_reply)) == 0)
-		{//发送失败
-			OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);				
-			return IDS_ERR_SOCKETS_SEND_FAILED;
-		}*/
 	}
 	else if(nRes == IDS_ERR_USER_NOT_EXIST)
 	{// 用户不存在
@@ -356,10 +465,11 @@ int CSocketServerDlg::Login(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：LoginOut
 功能描述：用户下线
+作者：    余志荣
+创建日期：2016-08-03
 参数说明：msg-消息结构体 pSocket-接收到消息的pSocket
 返 回 值：
 *********************************************************/
@@ -373,10 +483,22 @@ int CSocketServerDlg::LoginOut(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 	csID = msg->nID;
 	csOutMsg.Format(_T("用户%s已退出"), csID);
 	OutputInfo(csOutMsg);
-	//pSocket->ID = "";
-	//memset(pSocket->m_userID, 0, ID_MAX);
-
-	POSITION pos = m_listSocketChat.GetHeadPosition();
+	// 删除文件socket列表中的指针
+	POSITION pos = m_FileSocketList.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CChatSocket *p =m_FileSocketList.GetAt(pos);
+		if(!strcmp(pSocket->m_userID, p->m_userID))
+		{
+			p->Close();
+			delete p;
+			m_FileSocketList.RemoveAt(pos);
+			break;
+		}
+		m_FileSocketList.GetNext(pos);
+	}
+	// 删除聊天socket列表中的指针
+	pos = m_listSocketChat.GetHeadPosition();
 	while(pos != NULL)
 	{
 		CChatSocket * p = m_listSocketChat.GetAt(pos);
@@ -390,15 +512,12 @@ int CSocketServerDlg::LoginOut(struct MSG_LOGIN * msg, CChatSocket * pSocket)
 		m_listSocketChat.GetNext(pos);
 	}
 
-	//pSocket->Close();
-	//delete pSocket;
-	//pSocket = NULL;
 	// 刷新用户列表
 	RefreshListCtrlData();
 	return 0;
 }
 
-
+//注册模块
 /*********************************************************
 函数名称：Register
 功能描述：用户注册
@@ -422,7 +541,7 @@ int CSocketServerDlg::Register(struct MSG_REGISTER * msg_reg, CChatSocket * pSoc
 	return 0;
 }
 
-
+//一对一聊天模块
 /*********************************************************
 函数名称：RelayChatMsg
 功能描述：转发聊天消息
@@ -478,7 +597,7 @@ int CSocketServerDlg::GetFriendInfo(struct MSG_USERINFO * msg_userinfo, CChatSoc
 	struct MSG_USERINFO info;	
 	if(m_data.GetUserInfo(info, msg_userinfo->nID) != IDS_ERR_USER_NOT_EXIST)
 	{
-		info.nType = GET_FRIEND_INFO;	
+		info.nType = GET_FRIEND_INFO;
 		if(pSocket->Send(&info, sizeof(info)) == 0)
 		{//发送失败
 			OutputInfo(IDS_ERR_SOCKETS_SEND_FAILED);
@@ -577,7 +696,7 @@ int CSocketServerDlg::AddFriend(struct MSG_TRANSPOND * msg_addfrd, CChatSocket *
 返 回 值：
 备    注：
 *********************************************************/
-int CSocketServerDlg::DeleteFriend(struct MSG_TRANSPOND * msg_del, CChatSocket * pSocket)
+int CSocketServerDlg::DeleteFriend(MSG_MAKE_FRIEND * msg_del, CChatSocket * pSocket)
 {
 	if(m_data.BreakFriend(msg_del->FromID, msg_del->ToID) == TRUE)
 	{// 删除完成
@@ -586,8 +705,37 @@ int CSocketServerDlg::DeleteFriend(struct MSG_TRANSPOND * msg_del, CChatSocket *
 		strcpy_s(msg_sys.nID, msg_del->FromID);
 		msg_sys.nIDPrompt = IDS_DEL_FRIEND_SUCCESS;
 		pSocket->Send(&msg_sys, sizeof(msg_sys));
+
+		Sleep(50);
+		// 更新双方的好友列表
+		MSG_FRND_INFO msg_info;
+		msg_info.nType = GET_ALL_FRIEND_INFO;
+		int nRes;
+		nRes = m_data.GetAllFriendInfo(&msg_info, pSocket->m_userID);
+		if(nRes == TRUE)
+			pSocket->Send(&msg_info, sizeof(MSG_FRND_INFO));
+		
+		Sleep(50);
+
+		nRes = m_data.GetAllFriendInfo(&msg_info, msg_del->ToID);
+		if (nRes == FALSE)
+		{
+			return FALSE;
+		}
+
+		POSITION pos = m_listSocketChat.GetHeadPosition();
+		while (pos != NULL)
+		{
+			CChatSocket *p = m_listSocketChat.GetNext(pos);
+			if (!strcmp(p->m_userID, msg_del->ToID))
+			{
+				p->Send(&msg_info, sizeof(MSG_FRND_INFO));
+				break;
+			}
+		}
+		
 	}
-	return 0;
+	return TRUE;
 }
 
 
@@ -605,11 +753,14 @@ int CSocketServerDlg::SetUserStatus(struct MSG_USERINFO * msg_userinfo, CChatSoc
 }
 
 
-// 遍历未发送的消息
-
-
-
-// 刷新列表控件的内容
+// 
+/*********************************************************
+函数名称：RefreshListCtrlData
+功能描述：刷新列表控件的内容 （Data窗口）
+参数说明：
+返 回 值：
+备    注：
+*********************************************************/
 int CSocketServerDlg::RefreshListCtrlData(void)
 {
 	/*
@@ -642,84 +793,94 @@ int CSocketServerDlg::RefreshListCtrlData(void)
 }
 
 
-void CSocketServerDlg::OnLvnItemchangedListClient(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	// TODO: 在此添加控件通知处理程序代码
-	*pResult = 0;
-	
-	UpdateData(TRUE);
-	NMLISTVIEW *pNMListView = (NMLISTVIEW*)pNMHDR;
 
-	if(-1 != pNMListView->iItem) // 如果iItem不是-1，就说明有列表项被选择 
-	{
-		m_csID = m_lstClient.GetItemText(pNMListView->iItem, 0);
-		UpdateData(FALSE);
-	}
+// 遍历未发送的消息
 
-}
 
-// 服务器发送信息给某人
-void CSocketServerDlg::OnBnClickedButtonSend()
-{
-	// TODO: 在此添加控件通知处理程序代码
+//
 
-	UpdateData(TRUE);
-	if(m_csID == "") // 如果选择的客户端为空
-	{
-		MessageBox(_T("请选择一个客户端！"));
-		return;
-	}
-
-	// 遍历m_listSocketChat 找到对应ID的socket
-	POSITION pos = m_listSocketChat.GetHeadPosition();
-	CChatSocket *pChatSocket;
-	int nFlag = 0; // 0表示不存在此客户端
-	while(pos != NULL)
-	{
-		pChatSocket = m_listSocketChat.GetNext(pos);
-		if(pChatSocket->ID == m_csID)
-		{
-			nFlag = 1;
-			struct MSG_T msgSend;
-			msgSend.nType = CHATING_TEXT_MSG;
-			
-			memset(msgSend.Data, '\0', sizeof(msgSend.Data));	
-			memcpy(msgSend.Data, m_csSendMsg, m_csSendMsg.GetLength() * 2);
-			
-			if(pChatSocket->Send((void *)&msgSend, sizeof(msgSend)) == 0)
-			{
-				//发送失败
-				MessageBox(_T("发送失败"));
-				return;
-			}
-			// 在本地编辑框中输出信息
-			CString strTemp;
-			strTemp.Format(_T("给用户%s：%s\r\n"), pChatSocket->ID, m_csSendMsg);
-			m_csOutMsg += strTemp;
-			m_csSendMsg = "";
-
-			UpdateData(FALSE);
-			break;
-		}	
-	}
-	if(nFlag == 0) // 不存在此ID的socket
-	{
-		MessageBox(_T("此客户端不存在！"));
-		return;	
-	}
-
-}
-
-// 开启服务
-void CSocketServerDlg::OnBnClickedButtonOpen()
-{
-	// TODO: 在此添加控件通知处理程序代码
-	OpenServer();
-
-}
+//
+//
+//void CSocketServerDlg::OnLvnItemchangedListClient(NMHDR *pNMHDR, LRESULT *pResult)
+//{
+//	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+//	// TODO: 在此添加控件通知处理程序代码
+//	*pResult = 0;
+//	
+//	UpdateData(TRUE);
+//	NMLISTVIEW *pNMListView = (NMLISTVIEW*)pNMHDR;
+//
+//	if(-1 != pNMListView->iItem) // 如果iItem不是-1，就说明有列表项被选择 
+//	{
+//		m_csID = m_lstClient.GetItemText(pNMListView->iItem, 0);
+//		UpdateData(FALSE);
+//	}
+//
+//}
+//
+//// 服务器发送信息给某人
+//void CSocketServerDlg::OnBnClickedButtonSend()
+//{
+//	// TODO: 在此添加控件通知处理程序代码
+//
+//	UpdateData(TRUE);
+//	if(m_csID == "") // 如果选择的客户端为空
+//	{
+//		MessageBox(_T("请选择一个客户端！"));
+//		return;
+//	}
+//
+//	// 遍历m_listSocketChat 找到对应ID的socket
+//	POSITION pos = m_listSocketChat.GetHeadPosition();
+//	CChatSocket *pChatSocket;
+//	int nFlag = 0; // 0表示不存在此客户端
+//	while(pos != NULL)
+//	{
+//		pChatSocket = m_listSocketChat.GetNext(pos);
+//		if(pChatSocket->ID == m_csID)
+//		{
+//			nFlag = 1;
+//			struct MSG_T msgSend;
+//			msgSend.nType = CHATING_TEXT_MSG;
+//			
+//			memset(msgSend.Data, '\0', sizeof(msgSend.Data));	
+//			memcpy(msgSend.Data, m_csSendMsg, m_csSendMsg.GetLength() * 2);
+//			
+//			if(pChatSocket->Send((void *)&msgSend, sizeof(msgSend)) == 0)
+//			{
+//				//发送失败
+//				MessageBox(_T("发送失败"));
+//				return;
+//			}
+//			// 在本地编辑框中输出信息
+//			CString strTemp;
+//			strTemp.Format(_T("给用户%s：%s\r\n"), pChatSocket->ID, m_csSendMsg);
+//			m_csOutMsg += strTemp;
+//			m_csSendMsg = "";
+//
+//			UpdateData(FALSE);
+//			break;
+//		}	
+//	}
+//	if(nFlag == 0) // 不存在此ID的socket
+//	{
+//		MessageBox(_T("此客户端不存在！"));
+//		return;	
+//	}
+//
+//}
+//
 
 // 输出消息
+/*********************************************************
+函数名称：OutputInfo
+功能描述：在主窗口的编辑框中输出信息
+作者：    余志荣
+创建时间：2016-08-29
+参数说明：nIDPrompt -- 字符串表中定义的字符串ID
+		  csOutMsg -- 消息内容
+返 回 值：
+*********************************************************/
 int CSocketServerDlg::OutputInfo(const CString& csOutMsg)
 {
 	CTime tm = CTime::GetCurrentTime();
@@ -728,10 +889,9 @@ int CSocketServerDlg::OutputInfo(const CString& csOutMsg)
 	m_csOutMsg += csOutMsg;
 	m_csOutMsg += "\r\n";
 	UpdateData(FALSE);
-
+	m_EditOut.LineScroll(m_EditOut.GetLineCount());
 	return 0;
 }
-
 int CSocketServerDlg::OutputInfo(UINT nIDPrompt)
 {
 	CString csMsg;
@@ -742,11 +902,19 @@ int CSocketServerDlg::OutputInfo(UINT nIDPrompt)
 	m_csOutMsg += csMsg;
 	m_csOutMsg += "\r\n";
 	UpdateData(FALSE);
+	m_EditOut.LineScroll(m_EditOut.GetLineCount());
 	return 0;
 }
 
 
-// 发送系统消息
+/*********************************************************
+函数名称：SendSystemMsg
+功能描述：发送系统消息给制定用户 （ID在结构体中）
+作者：    余志荣
+创建时间：2016-08-29
+参数说明：msg_sys -- 消息内容
+返 回 值：
+*********************************************************/
 int CSocketServerDlg::SendSystemMsg(struct MSG_SYS * msg_sys)
 {
 	POSITION pos = m_listSocketChat.GetHeadPosition();
@@ -814,6 +982,7 @@ void CSocketServerDlg::OnBnClickedBtTest()
 	m_data.SetAllUserStatus(IDS_STATUS_OFFLINE);
 	RefreshListCtrlData();
 	m_listSocketChat.RemoveAll();
+	m_FileSocketList.RemoveAll();
 }
 
 
@@ -938,6 +1107,7 @@ int CSocketServerDlg::SendToID(char* cID, void* msg, int nMsgSize)
 	return 1;
 }
 
+
 //文件传输
 /*********************************************************
 函数名称：FileTransRequest
@@ -950,6 +1120,7 @@ int CSocketServerDlg::SendToID(char* cID, void* msg, int nMsgSize)
 int CSocketServerDlg::FileTransRequest(MSG_FILE_REQUEST *msg_req)
 {
 	SendToID(msg_req->ToID, msg_req, sizeof(MSG_FILE_REQUEST));
+	//delete msg_req;
 	return 0;
 }
 
@@ -964,8 +1135,153 @@ int CSocketServerDlg::FileTransRequest(MSG_FILE_REQUEST *msg_req)
 int CSocketServerDlg::FileTransAnswer(MSG_FILE_REQUEST *msg_ans)
 {
 	SendToID(msg_ans->FromID, msg_ans, sizeof(MSG_FILE_REQUEST));
+	//delete msg_ans;
 	return 0;
 }
 
+/*********************************************************
+函数名称：AddToFileSocketList
+功能描述：将socket添加到m_FileSocketList中 并在m_listChatSocket中移除
+作者：    余志荣
+创建时间：2016-08-30
+参数说明：pFileSocket -- 需要添加到m_FileSocketList的socket
+返 回 值：
+*********************************************************/
+int CSocketServerDlg::AddToFileSocketList(CChatSocket* pFileSocket)
+{
+	POSITION pos = m_listSocketChat.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CChatSocket *pSocket = m_listSocketChat.GetAt(pos);
+		if (pSocket == pFileSocket)
+		{
+			m_FileSocketList.AddTail(pFileSocket);
+			m_listSocketChat.RemoveAt(pos);
+			break;
+		}
+		m_listSocketChat.GetNext(pos);
+	}
+	return 0;
+}
+
+/*********************************************************
+函数名称：FileTransRelay
+功能描述：文件传输中转
+作者：    余志荣
+创建时间：2016-08-30
+参数说明：msg_file_content -- 文件内容
+返 回 值：
+*********************************************************/
+int CSocketServerDlg::FileTransRelay(MSG_FILE_CONTENT* msg_file_content)
+{
+	POSITION pos = m_FileSocketList.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CChatSocket *pSocket = m_FileSocketList.GetAt(pos);
+		if(!strcmp(pSocket->m_userID, msg_file_content->ToID))
+		{
+			pSocket->Send(msg_file_content, sizeof(MSG_FILE_CONTENT));
+		}
+		m_FileSocketList.GetNext(pos);
+	}
+	//delete msg_file_content;
+	return 0;
+}
+
+/*********************************************************
+函数名称：FileTransRelay（未使用）
+功能描述：指示文件传输的开始和结束
+作者：    余志荣
+创建时间：2016-08-30
+参数说明：msg_file -- 
+返 回 值：
+*********************************************************/
+int CSocketServerDlg::FileTransRelay(MSG_FILE_REQUEST* msg_file)
+{
+	POSITION pos = m_FileSocketList.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CChatSocket *pSocket = m_FileSocketList.GetAt(pos);
+		if(!strcmp(pSocket->m_userID, msg_file->ToID))
+		{
+			pSocket->Send(msg_file, sizeof(MSG_FILE_REQUEST));
+		}
+		m_FileSocketList.GetNext(pos);
+	}
+	//delete msg_file;
+	return 0;
+}
+
+
+/*********************************************************
+函数名称：FileTransRelay
+功能描述：指示文件传输的开始和结束
+作者：    余志荣
+创建时间：2016-08-30
+参数说明：msg_file -- 
+返 回 值：TRUE -- 移除成功
+		  FALSE -- 移除失败
+*********************************************************/
+BOOL CSocketServerDlg::RemoveSocketFromList(CChatSocket* pSocket)
+{
+	POSITION pos = m_listSocketChat.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CChatSocket *p = m_listSocketChat.GetAt(pos);
+		if (p == pSocket)
+		{
+			m_listSocketChat.RemoveAt(pos);
+			return TRUE;
+		}
+		m_listSocketChat.GetNext(pos);
+	}
+	// 在上面聊天列表没找到 就在文件列表找
+	pos = m_FileSocketList.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CChatSocket *p = m_FileSocketList.GetAt(pos);
+		if(p == pSocket)
+		{
+			m_FileSocketList.RemoveAt(pos);
+			return TRUE;
+		}
+		m_FileSocketList.GetNext(pos);
+	}
+	// 都没找到返回FALSE
+	return FALSE;
+}
+
+
+/*********************************************************
+函数名称：FileTransRelay
+功能描述：指示文件传输的开始和结束
+作者：    余志荣
+创建时间：2016-08-30
+参数说明：msg_file -- 
+返 回 值：TRUE -- 移除成功
+		  FALSE -- 移除失败
+*********************************************************/
+int CSocketServerDlg::FileTransOpera(MSG_FILE_OPERA* msg_opera, CChatSocket *pSocket)
+{
+	if (msg_opera->nType == MESSAGE_FILE_TRANS_END) // 文件socket传来的消息
+	{// 收到文件传输结束消息 断开两边的socket连接
+		pSocket->Close();
+		RemoveSocketFromList(pSocket);
+		
+		/*POSITION pos = m_FileSocketList.GetHeadPosition();
+		while (pos != NULL)
+		{
+			CChatSocket *p = m_FileSocketList.GetAt(pos);
+			if (!strcmp(p->m_userID, msg_opera->ToID))
+			{
+				p->Close();
+				m_FileSocketList.RemoveAt(pos);
+				break;
+			}
+			m_FileSocketList.GetNext(pos);
+		}*/
+	}
+	return 0;
+}
 
 

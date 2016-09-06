@@ -102,6 +102,7 @@
     <ClInclude Include="Data.h" />
     <ClInclude Include="ChatSocket.h" />
     <ClInclude Include="DataDlg.h" />
+    <ClInclude Include="FileSocket.h" />
     <ClInclude Include="ListenSocket.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SocketServer.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="ChatSocket.cpp" />
     <ClCompile Include="DataDlg.cpp" />
+    <ClCompile Include="FileSocket.cpp" />
     <ClCompile Include="ListenSocket.cpp" />
     <ClCompile Include="SocketServer.cpp" />
     <ClCompile Include="SocketServerDlg.cpp" />

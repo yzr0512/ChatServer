@@ -1,3 +1,12 @@
+
+/************************************************
+文 件 名：ChatSocket.h
+作    者：余志荣
+创建日期：2016-08-29
+用    途：通信用的Socket的头文件
+修改记录：2016-08-29 余志荣 创建
+************************************************/ 
+
 #pragma once
 
 
@@ -19,6 +28,8 @@ public:
 protected:
 	CWnd *m_pParentWnd;
 
+public:
+	virtual void OnClose(int nErrorCode);
 };
 
 

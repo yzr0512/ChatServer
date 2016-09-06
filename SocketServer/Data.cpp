@@ -1,11 +1,21 @@
-﻿#include "stdafx.h"
+﻿/************************************************
+File name：Data.cpp
+Create by：余志荣
+CreateDate：2016-08-03
+Use：这个文件是CData类的实现文件
+Change by: 2016年8月03日 by 余志荣 创建
+************************************************/ 
+
+#include "stdafx.h"
 #include "Data.h"
 #include "resource.h"
 
+
 CData::CData()
 {
-	m_MaxID = 10000;
+	m_MaxID = 10000; // 初始账号为10000
 }
+
 CData::~CData()
 {
 	POSITION pos = m_userlist.GetHeadPosition();
@@ -21,9 +31,12 @@ CData::~CData()
 /*********************************************************
 函数名称：IsExist
 功能描述：检查nID是否存在 并返回指针
-参数说明：pUserInfo-因为需要修改指针的指向 所以要双重指针
-		nID-被检查的用户账号
-返 回 值：返回假的时候pUserInfo = NULL，
+作者：    余志荣
+创建时间：2016-08-15
+参数说明：pUserInfo -- 因为需要修改指针的指向 所以要双重指针
+		  nID -- 被检查的用户账号
+返 回 值：返回FALSE的时候pUserInfo = NULL
+		  返回TRUE的时候pUserInfo指向用户信息
 *********************************************************/
 BOOL CData::IsExist(struct USERINFO **pUserInfo, const char* nID)const
 {
@@ -40,10 +53,10 @@ BOOL CData::IsExist(struct USERINFO **pUserInfo, const char* nID)const
 	return FALSE;
 }
 
-
 /*********************************************************
 函数名称：IsCorrect
 功能描述：检查账号和密码是否匹配
+作者：    余志荣
 参数说明：nID-用户账号 password-用户密码
 返 回 值：TRUE-密码正确
           IDS_ERR_PASSWD_INCORRECT-密码错误
@@ -60,18 +73,19 @@ int CData::IsCorrect(const char * nID, const char * password)const // 检查密�
 	
 	if(!strcmp(pUserInfo->PassWord, password))
 	{// 密码正确
-		return TRUE;			
+		return TRUE;
 	}
 	else
 	{// 密码错误
-		return IDS_ERR_PASSWD_INCORRECT;	
+		return IDS_ERR_PASSWD_INCORRECT;
 	}
 }
-
-		
+	
 /*********************************************************
 函数名称：GetUserStatus
 功能描述：获得nID的状态信息 
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：nID-账号
 返 回 值：nStatus-状态(ERR_USER_NOT_EXIT表示账号不存在)
 *********************************************************/
@@ -85,10 +99,11 @@ int CData::GetUserStatus(const char* nID)const
 	return IDS_ERR_USER_NOT_EXIST;
 }
 
-
 /*********************************************************
 函数名称：GetUserInfo
-功能描述：获得某个ID的全部信息 
+功能描述：获得某个ID的全部信息
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：user-储存用户信息的结构体 nID-账号
 返 回 值：
 *********************************************************/
@@ -102,7 +117,8 @@ int CData::GetUserInfo(struct USERINFO &user, const char * nID)const
 	}
 	// 拷贝信息
 	strcpy_s(user.nID, pInfo->nID);
-	strcpy_s(user.Name, pInfo->Name);
+	//strcpy_s(user.Name, pInfo->Name);
+	memcpy(user.Name, pInfo->Name, NAME_MAX);
 	strcpy_s(user.Email, pInfo->Email);
 	strcpy_s(user.FriendList, pInfo->FriendList);
 	strcpy_s(user.RegDate, pInfo->RegDate);
@@ -139,10 +155,11 @@ int CData::GetUserInfo(struct MSG_USERINFO &user, const char * nID)const
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：GetUserPublicInfo
-功能描述：获得某个ID的公开信息 
+功能描述：获得某个ID的公开信息
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：user-储存用户信息的结构体 nID-账号
 返 回 值：
 备    注：公开信息有 ID、昵称、邮箱、状态、性别
@@ -171,10 +188,11 @@ int CData::GetUserPublicInfo(struct MSG_USERINFO &user, const char * nID)const//
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：AddUser
 功能描述：添加用户
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：nID-账号(返回值) password-密码 email-邮箱 name-昵称 sex-性别
 	age-年龄 nStatus-状态
 返 回 值：TRUE-添加成功
@@ -243,10 +261,11 @@ BOOL CData::AddUser(char* nID, struct MSG_REGISTER* msg_reg)
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：DeleteUser
 功能描述：删除用户
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：nID-账号
 返 回 值：成功返回TRUE
 备    注：
@@ -269,10 +288,11 @@ int CData::DeleteUser(const char* nID)
 	return IDS_ERR_USER_NOT_EXIST;
 }
 
-
 /*********************************************************
 函数名称：GetUserFriendList
 功能描述：获得用户好友列表
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：friendlist-好友列表字符串 nID-账号
 返 回 值：成功返回TRUE
 备    注：好友列表用","分割
@@ -290,10 +310,11 @@ int CData::GetUserFriendList(char * friendlist, const char * nID)const
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：SetUserStatus
 功能描述：设置该ID的状态
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：nID-账号 nStatus-要设置成的状态
 返 回 值：成功返回TRUE
 备    注：好友列表用","分割
@@ -312,10 +333,11 @@ int CData::SetUserStatus(const char * nID, int nStatus)
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：MakeFriend
 功能描述：将两个nID建立好友关系
+作者：    余志荣
+创建时间：2016-08-15
 参数说明：nID1-账号1  nID2-账号2
 创建时间：2016-08-03
 返 回 值：成功返回TRUE
@@ -429,12 +451,12 @@ int CData::MakeFriend(const char * nID1, const char * nID2)
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：BreakFriend
 功能描述：将两个nID删除好友关系
-参数说明：nID1-账号1  nID2-账号2
+作者：    余志荣
 创建时间：2016-08-03
+参数说明：nID1-账号1  nID2-账号2
 返 回 值：成功返回TRUE
 *********************************************************/
 int CData::BreakFriend(const char * nID1, const char * nID2)
@@ -587,12 +609,12 @@ int CData::BreakFriend(const char * nID1, const char * nID2)
 	return TRUE; // 双方都删除完成
 }
 
-
 /*********************************************************
 函数名称：LoadData
 功能描述：保存账号数据
+作者：    余志荣
 创建时间：2016-08-18
-参数说明：
+参数说明：csFilePath -- 路径 （目前没用）
 返 回 值：成功返回TRUE
 *********************************************************/
 BOOL CData::SaveData(CString csFilePath)const
@@ -617,12 +639,12 @@ BOOL CData::SaveData(CString csFilePath)const
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：LoadData
 功能描述：加载账号数据
+作者：    余志荣
 创建时间：2016-08-18
-参数说明：msg_info-储存所有信息的结构体
+参数说明：csFilePath -- 路径 （目前没用）
 返 回 值：成功返回TRUE
 *********************************************************/
 BOOL CData::LoadData(CString csFilePath)
@@ -679,12 +701,13 @@ BOOL CData::LoadData(CString csFilePath)
 	return TRUE;
 }
 
-
 /*********************************************************
 函数名称：GetAllFriendInfo
 功能描述：获得某个ID所有好友的基本信息
+作者：    余志荣
 创建时间：2016-08-07
-参数说明：msg_info-储存所有信息的结构体
+参数说明：msg_info -- 储存所有信息的结构体
+		  nID -- 要获取信息的ID
 返 回 值：成功返回TRUE
 *********************************************************/
 int CData::GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, char* nID)
@@ -715,6 +738,7 @@ int CData::GetAllFriendInfo(struct MSG_FRND_INFO* msg_info, char* nID)
 		++nNum;
 		pToken = strtok_s(NULL, ",", &pTokenNext); 
 	}
+
 	msg_info->nNum = nNum;
 	// 完成
 	return TRUE;
@@ -758,14 +782,14 @@ void CData::ShowData(CListCtrl * pListCtrl)const
 	int nColInterval = rect.Width();
 	pListCtrl->SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 
-	pListCtrl->InsertColumn(0, _T("ID"), LVCFMT_CENTER,			int(nColInterval / 8));   
-    pListCtrl->InsertColumn(1, _T("Name"), LVCFMT_CENTER,		int(nColInterval / 8));
-	pListCtrl->InsertColumn(2, _T("Email"), LVCFMT_CENTER,		int(nColInterval / 8));   
-	pListCtrl->InsertColumn(3, _T("Sex"), LVCFMT_CENTER,		int(nColInterval / 8));   
-	pListCtrl->InsertColumn(4, _T("Age"), LVCFMT_CENTER,		int(nColInterval / 8));    
-	pListCtrl->InsertColumn(5, _T("Status"), LVCFMT_CENTER,		int(nColInterval / 8));   
-	pListCtrl->InsertColumn(6, _T("RegDate"), LVCFMT_CENTER,	int(nColInterval / 8));
-	pListCtrl->InsertColumn(7, _T("PassWord"), LVCFMT_CENTER,	int(nColInterval / 8));
+	pListCtrl->InsertColumn(0, _T("账号"), LVCFMT_CENTER,			int(nColInterval / 8));   
+    pListCtrl->InsertColumn(1, _T("名称"), LVCFMT_CENTER,		int(nColInterval / 8));
+	pListCtrl->InsertColumn(2, _T("邮件"), LVCFMT_CENTER,		int(nColInterval / 8));   
+	pListCtrl->InsertColumn(3, _T("性别"), LVCFMT_CENTER,		int(nColInterval / 8));   
+	pListCtrl->InsertColumn(4, _T("年龄"), LVCFMT_CENTER,		int(nColInterval / 8));    
+	pListCtrl->InsertColumn(5, _T("状态"), LVCFMT_CENTER,		int(nColInterval / 8));   
+	pListCtrl->InsertColumn(6, _T("注册日期"), LVCFMT_CENTER,	int(nColInterval / 8));
+	pListCtrl->InsertColumn(7, _T("密码"), LVCFMT_CENTER,	int(nColInterval / 8));
 	
 	// 添加数据
 	int i = 0;

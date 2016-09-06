@@ -1,4 +1,12 @@
-﻿// DataDlg.cpp : 实现文件
+﻿/************************************************
+文 件 名：DataDlg.cpp
+作    者：余志荣
+创建日期：2016-08-29
+用    途：账号管理窗口的实现文件
+修改记录：2016-08-29 余志荣 创建
+************************************************/ 
+
+// DataDlg.cpp : 实现文件
 //
 
 #include "stdafx.h"
@@ -72,7 +80,12 @@ void CDataDlg::PostNcDestroy()
 
 }
 
-
+/*********************************************************
+函数名称：RefreshListCtrlData
+功能描述：刷新列表控件的内容
+作    者：余志荣
+创建时间：2016-08-29
+*********************************************************/
 void CDataDlg::RefreshListCtrlData()
 {
 	m_pData->ShowData(&m_lstctlData);
@@ -80,20 +93,30 @@ void CDataDlg::RefreshListCtrlData()
 	UpdateData(FALSE);
 }
 
-
+/*********************************************************
+函数名称：OnBnClickedBtSaveData
+功能描述：保存账号数据
+作    者：余志荣
+创建时间：2016-08-29
+*********************************************************/
 void CDataDlg::OnBnClickedBtSaveData()
 {
 	((CSocketServerDlg*)m_pParentWnd)->m_data.SaveData();
 }
 
-
+/*********************************************************
+函数名称：OnBnClickedBtLoadData
+功能描述：加载账号数据
+作    者：余志荣
+创建时间：2016-08-29
+*********************************************************/
 void CDataDlg::OnBnClickedBtLoadData()
 {
 	((CSocketServerDlg*)m_pParentWnd)->m_data.LoadData();
 	((CSocketServerDlg*)m_pParentWnd)->RefreshListCtrlData();
 }
 
-
+// 改变窗口尺寸
 void CDataDlg::OnSize(UINT nType, int cx, int cy)
 {
 
@@ -102,11 +125,9 @@ void CDataDlg::OnSize(UINT nType, int cx, int cy)
 	if(RefreshCtrlPosition())
 		RefreshListCtrlData();
 	
-
-	// TODO: ÔÚ´Ë´¦Ìí¼ÓÏûÏ¢´¦Àí³ÌÐò´úÂë
 }
 
-
+// 重设控件位置
 int CDataDlg::RefreshCtrlPosition(void)
 {
 	if(m_lstctlData.GetSafeHwnd() == NULL)
@@ -135,18 +156,22 @@ int CDataDlg::RefreshCtrlPosition(void)
 	return 1;
 }
 
-
+/*********************************************************
+函数名称：SetData
+功能描述：设置数据
+作    者：余志荣
+创建时间：2016-08-29
+参数说明：pData -- 数据的指针
+*********************************************************/
 void CDataDlg::SetData(CData* pData)
 {
 	ASSERT(pData);
 	m_pData = pData;
 }
 
-
+// 设置窗口的最小尺寸
 void CDataDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌÐò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
-	
+{	
 	//调整最小高度与宽度
 	lpMMI->ptMinTrackSize.x = 740;
 	lpMMI->ptMinTrackSize.y = 497;

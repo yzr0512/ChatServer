@@ -1,3 +1,13 @@
+
+
+/************************************************
+文 件 名：ChatSocket.cpp
+作    者：余志荣
+创建日期：2016-08-29
+用    途：通信用的Socket的实现文件
+修改记录：2016-08-29 余志荣 创建
+************************************************/ 
+
 // ChatSocket.cpp : 实现文件
 //
 
@@ -36,4 +46,13 @@ void CChatSocket::OnReceive(int nErrorCode)
 	
 
 	CSocket::OnReceive(nErrorCode);
+}
+
+
+void CChatSocket::OnClose(int nErrorCode)
+{
+
+	((CSocketServerDlg*)m_pParentWnd)->RemoveSocketFromList(this);
+
+	CSocket::OnClose(nErrorCode);
 }

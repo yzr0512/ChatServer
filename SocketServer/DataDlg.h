@@ -1,4 +1,10 @@
-
+/************************************************
+文 件 名：DataDlg.h
+作    者：余志荣
+创建日期：2016-08-29
+用    途：账号管理对话框的头文件
+修改记录：2016-08-29 余志荣 创建
+************************************************/ 
 
 #pragma once
 
@@ -30,9 +36,9 @@ public:
 	afx_msg void OnBnClickedBtLoadData();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	
-	void RefreshListCtrlData();
-	void SetData(CData* pData);
-	int RefreshCtrlPosition(void);
+	void RefreshListCtrlData(); // 刷新数据
+	void SetData(CData* pData); // 设置数据
+	int RefreshCtrlPosition(void); // 重设控件位置
 	
 	CListCtrl m_lstctlData;
 
